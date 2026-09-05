@@ -26,26 +26,16 @@
       </ul>
     {%- endif -%}
 
-    {%- if section.settings.show_transfer -%}
-      <div class="ps-pagos__transfer ps-reveal" data-ps-delay="120">
-        <h3 class="ps-pagos__transfer-title">{{ section.settings.transfer_title }}</h3>
-        <dl class="ps-pagos__transfer-grid">
-          {%- if section.settings.transfer_bank != blank -%}
-            <div><dt>Banco</dt><dd>{{ section.settings.transfer_bank }}</dd></div>
-          {%- endif -%}
-          {%- if section.settings.transfer_holder != blank -%}
-            <div><dt>Titular</dt><dd>{{ section.settings.transfer_holder }}</dd></div>
-          {%- endif -%}
-          {%- if section.settings.transfer_clabe != blank -%}
-            <div><dt>CLABE</dt><dd>{{ section.settings.transfer_clabe }}</dd></div>
-          {%- endif -%}
-          {%- if section.settings.transfer_account != blank -%}
-            <div><dt>Número de cuenta</dt><dd>{{ section.settings.transfer_account }}</dd></div>
-          {%- endif -%}
-        </dl>
-        {%- if section.settings.transfer_note != blank -%}
-          <p class="ps-pagos__transfer-note">{{ section.settings.transfer_note }}</p>
-        {%- endif -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="ps-pagos__methods ps-reveal" data-ps-delay="120">
+        {%- for block in section.blocks -%}
+          <div class="ps-pagos__method" {{ block.shopify_attributes }}>
+            <h3 class="ps-pagos__method-title">{{ block.settings.title }}</h3>
+            {%- if block.settings.detail != blank -%}
+              <p class="ps-pagos__method-detail">{{ block.settings.detail | newline_to_br }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
       </div>
     {%- endif -%}
 
@@ -61,7 +51,7 @@
   #shopify-section-{{ section.id }} .ps-eyebrow { justify-content: center; }
   #shopify-section-{{ section.id }} .ps-pagos__list {
     display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-    gap: 16px; list-style: none; margin: 0; padding: 0;
+    gap: 16px; list-style: none; margin: 0 0 32px; padding: 0;
   }
   #shopify-section-{{ section.id }} .ps-pagos__item {
     display: flex; align-items: center; justify-content: center;
@@ -74,22 +64,27 @@
   #shopify-section-{{ section.id }} .ps-pagos__icon { height: 100%; width: auto; display: block; }
   #shopify-section-{{ section.id }} .ps-pagos__note { margin-top: 24px; font-size: 13px; color: rgba(255, 253, 248, 0.55); }
 
-  #shopify-section-{{ section.id }} .ps-pagos__transfer {
-    max-width: 420px;
-    margin: 32px auto 0;
-    padding: 24px 28px;
+  #shopify-section-{{ section.id }} .ps-pagos__methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  #shopify-section-{{ section.id }} .ps-pagos__method {
+    padding: 22px 24px;
     background: var(--ps-color-surface);
     border: 1px solid var(--ps-color-line-dark);
+    border-top: 2px solid var(--ps-color-gold);
     text-align: left;
   }
-  #shopify-section-{{ section.id }} .ps-pagos__transfer-title {
-    font-family: var(--ps-font-head); font-size: 18px; color: var(--ps-color-gold-light);
-    margin: 0 0 16px; text-align: center;
+  #shopify-section-{{ section.id }} .ps-pagos__method-title {
+    font-family: var(--ps-font-head); font-size: 17px; color: var(--ps-color-gold-light);
+    margin: 0 0 8px;
   }
-  #shopify-section-{{ section.id }} .ps-pagos__transfer-grid { margin: 0; display: flex; flex-direction: column; gap: 12px; }
-  #shopify-section-{{ section.id }} .ps-pagos__transfer-grid dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 253, 248, 0.5); margin: 0; }
-  #shopify-section-{{ section.id }} .ps-pagos__transfer-grid dd { font-size: 16px; color: var(--ps-color-paper); margin: 2px 0 0; font-family: var(--ps-font-head); letter-spacing: 0.02em; }
-  #shopify-section-{{ section.id }} .ps-pagos__transfer-note { margin: 16px 0 0; font-size: 13px; color: rgba(255, 253, 248, 0.55); text-align: center; }
+  #shopify-section-{{ section.id }} .ps-pagos__method-detail {
+    font-size: 14px; line-height: 1.6; color: rgba(255, 253, 248, 0.7); margin: 0;
+  }
 </style>
 
 {% schema %}
@@ -101,18 +96,29 @@
     { "type": "text", "id": "title", "label": "Título", "default": "Métodos de pago aceptados" },
     { "type": "textarea", "id": "body", "label": "Texto", "default": "Paga como prefieras, de forma 100% segura." },
     { "type": "text", "id": "note", "label": "Nota inferior (opcional)", "default": "Todas las transacciones están cifradas y protegidas." },
-    { "type": "header", "content": "Transferencia / depósito bancario" },
-    { "type": "checkbox", "id": "show_transfer", "label": "Mostrar datos de transferencia bancaria", "default": false },
-    { "type": "text", "id": "transfer_title", "label": "Título del recuadro", "default": "Transferencia o depósito bancario" },
-    { "type": "text", "id": "transfer_bank", "label": "Banco" },
-    { "type": "text", "id": "transfer_holder", "label": "Titular de la cuenta" },
-    { "type": "text", "id": "transfer_clabe", "label": "CLABE interbancaria" },
-    { "type": "text", "id": "transfer_account", "label": "Número de cuenta (opcional)" },
-    { "type": "text", "id": "transfer_note", "label": "Nota (ej. enviar comprobante por WhatsApp)" },
     { "type": "header", "content": "Espaciado" },
     { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 64 },
     { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 64 }
   ],
-  "presets": [ { "name": "PS – Métodos de pago" } ]
+  "blocks": [
+    {
+      "type": "metodo",
+      "name": "Método de pago",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Nombre", "default": "Transferencia bancaria" },
+        { "type": "textarea", "id": "detail", "label": "Detalle (banco, CLABE, instrucciones, WhatsApp...)", "default": "Escribe aquí los datos o instrucciones de este método." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PS – Métodos de pago",
+      "blocks": [
+        { "type": "metodo", "settings": { "title": "Tarjeta de crédito o débito", "detail": "Visa, Mastercard y American Express, procesado de forma segura." } },
+        { "type": "metodo", "settings": { "title": "Transferencia bancaria", "detail": "Escribe aquí tu banco, titular y CLABE." } },
+        { "type": "metodo", "settings": { "title": "Depósito en efectivo", "detail": "Escribe aquí las instrucciones para depósito en tienda o cajero." } }
+      ]
+    }
+  ]
 }
 {% endschema %}
