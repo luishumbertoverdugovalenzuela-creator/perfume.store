@@ -67,6 +67,15 @@
         "speed": 32
       }
     },
+    "ps-pagos": {
+      "type": "ps-pagos",
+      "settings": {
+        "eyebrow": "Compra con confianza",
+        "title": "Métodos de pago aceptados",
+        "body": "Paga como prefieras, de forma 100% segura.",
+        "note": "Todas las transacciones están cifradas y protegidas."
+      }
+    },
     "ps-faq": {
       "type": "ps-faq",
       "blocks": {
@@ -83,5 +92,5 @@
       }
     }
   },
-  "order": ["ps-hero", "ps-trust", "ps-catalogo", "ps-historia", "ps-resenas", "ps-faq"]
+  "order": ["ps-hero", "ps-trust", "ps-catalogo", "ps-historia", "ps-resenas", "ps-pagos", "ps-faq"]
 }
