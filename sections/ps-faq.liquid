@@ -9,7 +9,7 @@
   }
 {% endstyle %}
 
-<section class="ps-section ps-faq">
+<section class="ps-section ps-dark ps-faq">
   <div class="ps-container ps-faq__grid">
     <div class="ps-reveal">
       <p class="ps-eyebrow">{{ section.settings.eyebrow }}</p>
@@ -32,16 +32,16 @@
 
 <style>
   #shopify-section-{{ section.id }} .ps-faq__grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 56px; align-items: start; }
-  #shopify-section-{{ section.id }} .ps-faq__item { border-bottom: 1px solid var(--ps-color-line); }
+  #shopify-section-{{ section.id }} .ps-faq__item { border-bottom: 1px solid var(--ps-color-line-dark); }
   #shopify-section-{{ section.id }} .ps-faq__trigger {
     width: 100%; display: flex; justify-content: space-between; align-items: center;
     background: none; border: none; cursor: pointer; padding: 20px 0;
-    font-family: var(--ps-font-body); font-size: 16px; font-weight: 600; color: var(--ps-color-ink); text-align: left;
+    font-family: var(--ps-font-body); font-size: 16px; font-weight: 600; color: var(--ps-color-paper); text-align: left;
   }
   #shopify-section-{{ section.id }} .ps-faq__icon { color: var(--ps-color-gold); font-size: 20px; transition: transform 0.3s var(--ps-ease); flex-shrink: 0; margin-left: 16px; }
   #shopify-section-{{ section.id }} .ps-faq__item[data-open="true"] .ps-faq__icon { transform: rotate(45deg); }
   #shopify-section-{{ section.id }} .ps-faq__answer { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.35s var(--ps-ease), opacity 0.3s var(--ps-ease); }
-  #shopify-section-{{ section.id }} .ps-faq__answer p { overflow: hidden; margin: 0; padding-right: 40px; color: var(--ps-color-ink-soft); font-size: 15px; line-height: 1.7; }
+  #shopify-section-{{ section.id }} .ps-faq__answer p { overflow: hidden; margin: 0; padding-right: 40px; color: rgba(255, 253, 248, 0.65); font-size: 15px; line-height: 1.7; }
   #shopify-section-{{ section.id }} .ps-faq__item[data-open="true"] .ps-faq__answer { grid-template-rows: 1fr; opacity: 1; padding-bottom: 20px; }
   #shopify-section-{{ section.id }} .ps-faq__answer > p { min-height: 0; }
   @media screen and (max-width: 990px) {

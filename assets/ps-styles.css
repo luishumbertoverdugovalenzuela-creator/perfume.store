@@ -1,7 +1,7 @@
 /* Perfume Store — design tokens & shared styles */
 :root {
-  --ps-color-bg: #f7f2e9;
-  --ps-color-bg-alt: #efe6d5;
+  --ps-color-bg: #1a1a1a;
+  --ps-color-bg-alt: #141414;
   --ps-color-surface: #121212;
   --ps-color-surface-2: #1c1c1c;
   --ps-color-ink: #17130f;

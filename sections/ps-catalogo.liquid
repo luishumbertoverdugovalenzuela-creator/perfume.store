@@ -18,7 +18,7 @@
   endif
 -%}
 
-<section class="ps-section ps-catalogo">
+<section class="ps-section ps-dark ps-catalogo">
   <div class="ps-container">
     <div class="ps-catalogo__head ps-reveal">
       <p class="ps-eyebrow">{{ section.settings.eyebrow }}</p>
@@ -53,7 +53,7 @@
 
     {%- if section.settings.button_text != blank -%}
       <div class="ps-catalogo__cta ps-reveal">
-        <a href="{{ section.settings.button_url | default: '/collections/all' }}" class="ps-btn ps-btn--dark">{{ section.settings.button_text }}</a>
+        <a href="{{ section.settings.button_url | default: '/collections/all' }}" class="ps-btn ps-btn--outline">{{ section.settings.button_text }}</a>
       </div>
     {%- endif -%}
   </div>
@@ -77,6 +77,7 @@
     display: block;
     aspect-ratio: 1 / 1;
     background: var(--ps-color-surface);
+    border: 1px solid var(--ps-color-line-dark);
     overflow: hidden;
   }
   #shopify-section-{{ section.id }} .ps-prodcard__media::before {
@@ -99,9 +100,10 @@
   #shopify-section-{{ section.id }} .ps-prodcard:hover .ps-prodcard__media img { transform: scale(1.05); }
   #shopify-section-{{ section.id }} .ps-prodcard__info { display: flex; flex-direction: column; gap: 6px; padding: 18px 4px 0; }
   #shopify-section-{{ section.id }} .ps-prodcard__vendor { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ps-color-gold); }
-  #shopify-section-{{ section.id }} .ps-prodcard__title { font-size: 15px; line-height: 1.4; color: var(--ps-color-ink); transition: color 0.3s var(--ps-ease); }
+  #shopify-section-{{ section.id }} .ps-prodcard__title { font-size: 15px; line-height: 1.4; color: var(--ps-color-paper); transition: color 0.3s var(--ps-ease); }
   #shopify-section-{{ section.id }} .ps-prodcard:hover .ps-prodcard__title { color: var(--ps-color-gold); }
-  #shopify-section-{{ section.id }} .ps-prodcard__price { font-family: var(--ps-font-head); font-size: 16px; color: var(--ps-color-ink); }
+  #shopify-section-{{ section.id }} .ps-prodcard__price { font-family: var(--ps-font-head); font-size: 16px; color: var(--ps-color-paper); }
+  #shopify-section-{{ section.id }} .ps-prodcard__price .price { color: var(--ps-color-paper); }
   #shopify-section-{{ section.id }} .ps-prodcard__price .price { font-family: inherit; }
 </style>
 
