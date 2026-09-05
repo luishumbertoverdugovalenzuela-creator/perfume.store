@@ -5,7 +5,8 @@
 - Tema base: Dawn (vía zip oficial de GitHub)
 - Tema de trabajo en Shopify: **"Perfume Store (Claude)"**, id `159068913896` (gid://shopify/OnlineStoreTheme/159068913896), sin publicar
 - Conexión: Admin API vía app personalizada "Asistente tienda" (token propio, sin depender del login por navegador — bloqueado en este entorno)
-- Producto: la tienda ya tenía 11 perfumes de diseñador activos (YSL, Jean Paul Gaultier, Versace, Giorgio Armani, Carolina Herrera, Bharara, Armaf) con fotos propias — no se crearon productos nuevos, solo se diseñó el escaparate
+- Producto: la tienda tiene 12 perfumes de diseñador activos (YSL, Jean Paul Gaultier, Versace, Giorgio Armani, Carolina Herrera, Bharara, Armaf, Dolce & Gabbana) con fotos propias — no se crearon productos nuevos, solo se diseñó el escaparate. La marca ("vendor") de cada uno se corrigió a la marca real (antes decía "Mi tienda" en los 12).
+- Ajustes hechos tras el primer vistazo del usuario: texto oscuro invisible en héroe (corregido, color forzado en secciones oscuras), fondo blanco del frasco de portada (recortado, ahora flota con resplandor dorado), fondo crema→blanco en tarjetas, fotos de producto recortadas de forma inconsistente (cambiado a "contain"), catálogo completo (`/collections/all`) no cargaba nuestro CSS/JS (bug real: solo se cargaba dentro de nuestras propias secciones; ahora se carga globalmente desde `layout/theme.liquid`).
 
 ## Fases completadas
 - [x] 0 Entorno
