@@ -26,6 +26,29 @@
       </ul>
     {%- endif -%}
 
+    {%- if section.settings.show_transfer -%}
+      <div class="ps-pagos__transfer ps-reveal" data-ps-delay="120">
+        <h3 class="ps-pagos__transfer-title">{{ section.settings.transfer_title }}</h3>
+        <dl class="ps-pagos__transfer-grid">
+          {%- if section.settings.transfer_bank != blank -%}
+            <div><dt>Banco</dt><dd>{{ section.settings.transfer_bank }}</dd></div>
+          {%- endif -%}
+          {%- if section.settings.transfer_holder != blank -%}
+            <div><dt>Titular</dt><dd>{{ section.settings.transfer_holder }}</dd></div>
+          {%- endif -%}
+          {%- if section.settings.transfer_clabe != blank -%}
+            <div><dt>CLABE</dt><dd>{{ section.settings.transfer_clabe }}</dd></div>
+          {%- endif -%}
+          {%- if section.settings.transfer_account != blank -%}
+            <div><dt>Número de cuenta</dt><dd>{{ section.settings.transfer_account }}</dd></div>
+          {%- endif -%}
+        </dl>
+        {%- if section.settings.transfer_note != blank -%}
+          <p class="ps-pagos__transfer-note">{{ section.settings.transfer_note }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
     {%- if section.settings.note != blank -%}
       <p class="ps-pagos__note ps-reveal" data-ps-delay="150">{{ section.settings.note }}</p>
     {%- endif -%}
@@ -50,6 +73,23 @@
   }
   #shopify-section-{{ section.id }} .ps-pagos__icon { height: 100%; width: auto; display: block; }
   #shopify-section-{{ section.id }} .ps-pagos__note { margin-top: 24px; font-size: 13px; color: rgba(255, 253, 248, 0.55); }
+
+  #shopify-section-{{ section.id }} .ps-pagos__transfer {
+    max-width: 420px;
+    margin: 32px auto 0;
+    padding: 24px 28px;
+    background: var(--ps-color-surface);
+    border: 1px solid var(--ps-color-line-dark);
+    text-align: left;
+  }
+  #shopify-section-{{ section.id }} .ps-pagos__transfer-title {
+    font-family: var(--ps-font-head); font-size: 18px; color: var(--ps-color-gold-light);
+    margin: 0 0 16px; text-align: center;
+  }
+  #shopify-section-{{ section.id }} .ps-pagos__transfer-grid { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  #shopify-section-{{ section.id }} .ps-pagos__transfer-grid dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 253, 248, 0.5); margin: 0; }
+  #shopify-section-{{ section.id }} .ps-pagos__transfer-grid dd { font-size: 16px; color: var(--ps-color-paper); margin: 2px 0 0; font-family: var(--ps-font-head); letter-spacing: 0.02em; }
+  #shopify-section-{{ section.id }} .ps-pagos__transfer-note { margin: 16px 0 0; font-size: 13px; color: rgba(255, 253, 248, 0.55); text-align: center; }
 </style>
 
 {% schema %}
@@ -61,6 +101,14 @@
     { "type": "text", "id": "title", "label": "Título", "default": "Métodos de pago aceptados" },
     { "type": "textarea", "id": "body", "label": "Texto", "default": "Paga como prefieras, de forma 100% segura." },
     { "type": "text", "id": "note", "label": "Nota inferior (opcional)", "default": "Todas las transacciones están cifradas y protegidas." },
+    { "type": "header", "content": "Transferencia / depósito bancario" },
+    { "type": "checkbox", "id": "show_transfer", "label": "Mostrar datos de transferencia bancaria", "default": false },
+    { "type": "text", "id": "transfer_title", "label": "Título del recuadro", "default": "Transferencia o depósito bancario" },
+    { "type": "text", "id": "transfer_bank", "label": "Banco" },
+    { "type": "text", "id": "transfer_holder", "label": "Titular de la cuenta" },
+    { "type": "text", "id": "transfer_clabe", "label": "CLABE interbancaria" },
+    { "type": "text", "id": "transfer_account", "label": "Número de cuenta (opcional)" },
+    { "type": "text", "id": "transfer_note", "label": "Nota (ej. enviar comprobante por WhatsApp)" },
     { "type": "header", "content": "Espaciado" },
     { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 64 },
     { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 64 }
