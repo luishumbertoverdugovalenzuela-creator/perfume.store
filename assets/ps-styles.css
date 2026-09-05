@@ -163,6 +163,12 @@
 select {
   color-scheme: dark;
 }
+.select__select,
+.facet-filters__sort {
+  color-scheme: dark;
+  background-color: var(--ps-color-surface) !important;
+  color: var(--ps-color-paper) !important;
+}
 
 /* Fix Dawn header margin gap */
 .section-header { margin-bottom: 0 !important; }
