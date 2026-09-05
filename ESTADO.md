@@ -56,6 +56,12 @@ https://7eew11-ei.myshopify.com/?preview_theme_id=159068913896
 - [ ] Nombre de la tienda en el panel sigue siendo "Mi tienda" — cambiar en Configuración → General si se quiere que diga "Perfume Store"
 - [ ] Publicar el tema como definitivo — SOLO con confirmación explícita del usuario (`shopify theme publish` o Admin API `themePublish`)
 
+## Fotos de producto — mejora de calidad (22 productos, sept. 2026)
+- Se reprocesaron las fotos de los 22 productos activos con `tools/enhance_product_photos.py` (gratis, sin IA de pago): nitidez suave, contraste/color más ricos, recorte de fondo transparente y una sombra elíptica de apoyo bajo el frasco para look de foto de estudio.
+- **Cuidado**: valores de nitidez altos (`UnsharpMask` con `percent` alto o upscaling previo) generan halos/bandas blancas sobre los detalles facetados de los frascos — usar los valores conservadores ya calibrados en el script (`radius=1.4, percent=55, threshold=4`).
+- El script sustituye la imagen `-cutout.png` anterior de cada producto (la sube nueva, reordena a posición 0, borra la anterior) — no toca la foto original de fábrica, que sigue en la galería como imagen secundaria.
+- Pendiente/ofrecido al usuario: fondos generados con Leonardo AI (cuenta propia del usuario) para componer el frasco real recortado encima — aún no entregó ninguna imagen de fondo.
+
 ## Nota técnica (para continuidad de la sesión)
 - El login por navegador de Shopify CLI (`shopify theme list/push` y `store auth`) está bloqueado en este entorno (Shopify rechaza con 403 el `device_authorization` del CLI). Por eso toda la conexión se hizo con una **app personalizada** (Client ID `cc2ef9889f099a66809457e62cad0977`) y un **token de acceso Admin API** (`shpat_...`, guardado solo en variables de entorno de la sesión, no en el repo).
 - La subida de archivos del tema se hace con la mutación GraphQL `themeFilesUpsert` (no con `shopify theme push`, que también falla por el mismo bloqueo de login). Script de referencia: ver historial de la sesión / recrear según `references/09-admin-api.md` + introspección de `OnlineStoreThemeFilesUpsertFileInput`.
