@@ -107,6 +107,12 @@
 .ps-catalogo__grid > div { border-top: 2px solid transparent; transition: border-color 0.4s var(--ps-ease), transform 0.4s var(--ps-ease); }
 .ps-catalogo__grid > div:hover { border-top-color: var(--ps-color-gold); transform: translateY(-4px); }
 .ps-catalogo__grid .price { font-family: var(--ps-font-head); }
+.ps-catalogo__grid .card__media img,
+.ps-producto__main img {
+  filter: drop-shadow(0 22px 18px rgba(23, 19, 15, 0.14));
+  transition: transform 0.6s var(--ps-ease);
+}
+.ps-catalogo__grid > div:hover .card__media img { transform: scale(1.03); }
 
 /* Grid helpers */
 .ps-grid { display: grid; gap: 28px; }
