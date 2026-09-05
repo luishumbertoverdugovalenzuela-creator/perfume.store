@@ -24,6 +24,9 @@
 .ps-container { max-width: var(--ps-maxw); margin: 0 auto; padding: 0 var(--ps-gutter); }
 
 .ps-dark { background: var(--ps-color-surface); color: var(--ps-color-paper); }
+.ps-dark .ps-h1,
+.ps-dark .ps-h2,
+.ps-dark .ps-h3 { color: var(--ps-color-paper); }
 .ps-dark .ps-eyebrow { color: var(--ps-color-gold-light); }
 .ps-dark .ps-body { color: rgba(255, 253, 248, 0.75); }
 
