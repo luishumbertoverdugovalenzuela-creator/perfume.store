@@ -10,7 +10,8 @@
 
 <section class="ps-section ps-dark ps-historia">
   <div class="ps-container ps-historia__grid">
-    <div class="ps-historia__media ps-reveal">
+    <div class="ps-historia__media">
+      <div class="ps-historia__glow" aria-hidden="true"></div>
       {%- if section.settings.image != blank -%}
         <img src="{{ section.settings.image | image_url: width: 900 }}" alt="{{ section.settings.image.alt | escape }}" loading="lazy">
       {%- else -%}
@@ -23,7 +24,7 @@
       <p class="ps-body">{{ section.settings.body | newline_to_br }}</p>
       <div class="ps-historia__stats">
         {%- for block in section.blocks -%}
-          <div class="ps-historia__stat" {{ block.shopify_attributes }}>
+          <div class="ps-historia__stat ps-reveal" data-ps-delay="{{ forloop.index0 | times: 120 | plus: 180 }}" {{ block.shopify_attributes }}>
             <span class="ps-historia__stat-number">{{ block.settings.number }}</span>
             <span class="ps-historia__stat-label">{{ block.settings.label }}</span>
           </div>
@@ -38,7 +39,43 @@
 
 <style>
   #shopify-section-{{ section.id }} .ps-historia__grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: center; }
-  #shopify-section-{{ section.id }} .ps-historia__media img { width: 100%; max-width: 420px; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.5)); }
+  #shopify-section-{{ section.id }} .ps-historia__media { position: relative; display: flex; align-items: center; justify-content: center; }
+  #shopify-section-{{ section.id }} .ps-historia__media img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 30px 40px rgba(0,0,0,0.5));
+    animation: ps-historia-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) both,
+               ps-historia-float 7s ease-in-out 1.6s infinite;
+  }
+  #shopify-section-{{ section.id }} .ps-historia__glow {
+    position: absolute; width: 64%; height: 64%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(178,138,77,0.32) 0%, rgba(178,138,77,0) 70%);
+    filter: blur(10px);
+    animation: ps-historia-glow-in 1.6s ease both,
+               ps-historia-glow-pulse 7s ease-in-out 1.6s infinite;
+  }
+  @keyframes ps-historia-in {
+    0% { opacity: 0; transform: scale(0.8) translateY(30px); }
+    70% { opacity: 1; transform: scale(1.03) translateY(-4px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes ps-historia-float {
+    0%, 100% { transform: scale(1) translateY(0); }
+    50% { transform: scale(1) translateY(-14px); }
+  }
+  @keyframes ps-historia-glow-in {
+    0% { opacity: 0; transform: scale(0.4); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes ps-historia-glow-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.65; transform: scale(1.14); }
+  }
   #shopify-section-{{ section.id }} .ps-historia__stats { display: flex; gap: 40px; margin: 8px 0 28px; flex-wrap: wrap; }
   #shopify-section-{{ section.id }} .ps-historia__stat-number { display: block; font-family: var(--ps-font-head); font-size: 34px; color: var(--ps-color-gold); line-height: 1; margin-bottom: 6px; }
   #shopify-section-{{ section.id }} .ps-historia__stat-label { font-size: 13px; color: rgba(255, 253, 248, 0.6); }

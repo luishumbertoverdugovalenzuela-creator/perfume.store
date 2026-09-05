@@ -185,4 +185,3 @@ select {
 .ps-marquee { overflow-x: clip; overflow-y: visible; }
 .ps-marquee__track { display: flex; gap: 48px; width: max-content; animation: ps-scroll linear infinite; }
 @keyframes ps-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .ps-marquee__track { animation: none; } }
