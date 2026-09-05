@@ -1,5 +1,6 @@
 /* Perfume Store — design tokens & shared styles */
 :root {
+  color-scheme: dark;
   --ps-color-bg: #1a1a1a;
   --ps-color-bg-alt: #141414;
   --ps-color-surface: #121212;
@@ -156,6 +157,11 @@
 @media screen and (max-width: 540px) {
   .ps-grid--4, .ps-grid--3 { grid-template-columns: 1fr; }
   :root { --ps-gutter: 18px; }
+}
+
+/* Native form controls (select dropdowns, etc.) follow the dark palette */
+select {
+  color-scheme: dark;
 }
 
 /* Fix Dawn header margin gap */
