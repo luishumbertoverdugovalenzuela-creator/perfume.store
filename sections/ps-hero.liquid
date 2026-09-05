@@ -56,27 +56,24 @@
     height: auto;
     max-height: 520px;
     filter: drop-shadow(0 40px 60px rgba(0,0,0,0.55));
-    opacity: 0;
-    transform: scale(0.82) rotate(-10deg);
-    transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.15s, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
-  }
-  #shopify-section-{{ section.id }} .ps-hero__media.ps-visible img {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-    animation: ps-hero-float 6s ease-in-out 1.4s infinite;
+    animation: ps-hero-in 1.8s cubic-bezier(0.22, 1, 0.36, 1) both,
+               ps-hero-float 6s ease-in-out 1.8s infinite;
   }
   #shopify-section-{{ section.id }} .ps-hero__glow {
     position: absolute; width: 70%; height: 70%; border-radius: 50%;
     background: radial-gradient(circle, rgba(178,138,77,0.35) 0%, rgba(178,138,77,0) 70%);
     filter: blur(10px);
-    opacity: 0;
-    transform: scale(0.6);
-    transition: opacity 1.4s ease 0.2s, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+    animation: ps-hero-glow-in 1.8s ease both,
+               ps-hero-glow-pulse 6s ease-in-out 1.8s infinite;
   }
-  #shopify-section-{{ section.id }} .ps-hero__media.ps-visible .ps-hero__glow {
-    opacity: 1;
-    transform: scale(1);
-    animation: ps-hero-glow-pulse 6s ease-in-out 1.4s infinite;
+  @keyframes ps-hero-in {
+    0% { opacity: 0; transform: scale(0.72) rotate(-16deg); }
+    70% { opacity: 1; transform: scale(1.04) rotate(2deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  @keyframes ps-hero-glow-in {
+    0% { opacity: 0; transform: scale(0.4); }
+    100% { opacity: 1; transform: scale(1); }
   }
   @keyframes ps-hero-float {
     0%, 100% { transform: scale(1) rotate(0deg) translateY(0); }
@@ -88,10 +85,8 @@
   }
   @media (prefers-reduced-motion: reduce) {
     #shopify-section-{{ section.id }} .ps-hero__media img,
-    #shopify-section-{{ section.id }} .ps-hero__media.ps-visible img,
-    #shopify-section-{{ section.id }} .ps-hero__glow,
-    #shopify-section-{{ section.id }} .ps-hero__media.ps-visible .ps-hero__glow {
-      animation: none; opacity: 1; transform: none; transition: none;
+    #shopify-section-{{ section.id }} .ps-hero__glow {
+      animation: none;
     }
   }
   @media screen and (max-width: 990px) {
