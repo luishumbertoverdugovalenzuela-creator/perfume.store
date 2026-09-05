@@ -18,20 +18,48 @@
   <div class="ps-container ps-producto__grid">
 
     <div class="ps-producto__gallery">
-      {%- assign media = product.media | default: product.images -%}
+      {%- liquid
+        assign all_media = product.media | default: product.images
+        assign has_cutout = false
+        for m in all_media
+          if m.src contains '-cutout.'
+            assign has_cutout = true
+            break
+          endif
+        endfor
+        assign cutout_count = 0
+        if has_cutout
+          for m in all_media
+            if m.src contains '-cutout.'
+              assign cutout_count = cutout_count | plus: 1
+            endif
+          endfor
+        else
+          assign cutout_count = all_media.size
+        endif
+      -%}
       <div class="ps-producto__main">
-        {%- if media.size > 0 -%}
-          <img data-ps-gallery-main src="{{ media.first | image_url: width: 900 }}" alt="{{ media.first.alt | escape }}" loading="eager" fetchpriority="high">
+        {%- if all_media.size > 0 -%}
+          {%- for m in all_media -%}
+            {%- if has_cutout and m.src contains '-cutout.' or has_cutout == false -%}
+              <img data-ps-gallery-main src="{{ m | image_url: width: 900 }}" alt="{{ m.alt | escape }}" loading="eager" fetchpriority="high">
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
         {%- else -%}
           <div class="ps-producto__placeholder">{{ 'product-1' | placeholder_svg_tag: 'ps-placeholder-svg' }}</div>
         {%- endif -%}
       </div>
-      {%- if media.size > 1 -%}
+      {%- if cutout_count > 1 -%}
         <div class="ps-producto__thumbs">
-          {%- for m in media -%}
-            <button type="button" class="ps-producto__thumb{% if forloop.first %} is-active{% endif %}" data-ps-gallery-thumb data-full="{{ m | image_url: width: 900 }}">
-              <img src="{{ m | image_url: width: 160 }}" alt="{{ m.alt | escape }}" loading="lazy">
-            </button>
+          {%- assign thumb_index = 0 -%}
+          {%- for m in all_media -%}
+            {%- if has_cutout and m.src contains '-cutout.' or has_cutout == false -%}
+              <button type="button" class="ps-producto__thumb{% if thumb_index == 0 %} is-active{% endif %}" data-ps-gallery-thumb data-full="{{ m | image_url: width: 900 }}">
+                <img src="{{ m | image_url: width: 160 }}" alt="{{ m.alt | escape }}" loading="lazy">
+              </button>
+              {%- assign thumb_index = thumb_index | plus: 1 -%}
+            {%- endif -%}
           {%- endfor -%}
         </div>
       {%- endif -%}
