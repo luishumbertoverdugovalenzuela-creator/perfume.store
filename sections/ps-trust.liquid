@@ -12,7 +12,20 @@
   <div class="ps-container ps-trust__row">
     {%- for block in section.blocks -%}
       <div class="ps-trust__item ps-reveal" data-ps-delay="{{ forloop.index0 | times: 80 }}" {{ block.shopify_attributes }}>
-        <span class="ps-trust__icon">{{ block.settings.icon }}</span>
+        <span class="ps-trust__icon">
+          {%- case block.settings.icon -%}
+            {%- when 'check' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12.5 9.5 18 20 6"/></svg>
+            {%- when 'truck' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h11v10H2z"/><path d="M13 10h5l4 4v2h-9z"/><circle cx="7" cy="18" r="1.7"/><circle cx="18" cy="18" r="1.7"/></svg>
+            {%- when 'lock' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="5" y="11" width="14" height="9"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            {%- when 'box' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8 12 4l9 4-9 4-9-4Z"/><path d="M3 8v9l9 4 9-4V8"/><path d="M12 12v9"/></svg>
+            {%- else -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="8"/></svg>
+          {%- endcase -%}
+        </span>
         <span class="ps-trust__text">{{ block.settings.text }}</span>
       </div>
     {%- endfor -%}
@@ -28,11 +41,12 @@
     padding: 22px 0;
   }
   #shopify-section-{{ section.id }} .ps-trust__item {
-    display: flex; align-items: center; gap: 12px;
-    font-size: 14px; letter-spacing: 0.02em; color: var(--ps-color-ink);
+    display: flex; align-items: center; gap: 14px;
+    font-size: 13px; letter-spacing: 0.03em; color: var(--ps-color-ink);
     flex: 1 1 200px;
   }
-  #shopify-section-{{ section.id }} .ps-trust__icon { font-size: 20px; color: var(--ps-color-gold); }
+  #shopify-section-{{ section.id }} .ps-trust__icon { color: var(--ps-color-gold); flex-shrink: 0; }
+  #shopify-section-{{ section.id }} .ps-trust__icon svg { width: 22px; height: 22px; display: block; }
   @media screen and (max-width: 540px) {
     #shopify-section-{{ section.id }} .ps-trust__row { justify-content: center; text-align: center; }
     #shopify-section-{{ section.id }} .ps-trust__item { flex: 1 1 100%; justify-content: center; }
@@ -53,7 +67,13 @@
       "type": "item",
       "name": "Elemento",
       "settings": [
-        { "type": "text", "id": "icon", "label": "Icono (emoji)", "default": "✓" },
+        { "type": "select", "id": "icon", "label": "Icono",
+          "options": [
+            {"value": "check", "label": "Marca de verificación"},
+            {"value": "truck", "label": "Camión de envío"},
+            {"value": "lock", "label": "Candado"},
+            {"value": "box", "label": "Caja"}
+          ], "default": "check" },
         { "type": "text", "id": "text", "label": "Texto", "default": "100% originales" }
       ]
     }
@@ -62,10 +82,10 @@
     {
       "name": "PS – Franja de confianza",
       "blocks": [
-        { "type": "item", "settings": { "icon": "✓", "text": "100% originales, garantizado" } },
-        { "type": "item", "settings": { "icon": "🚚", "text": "Envío rápido a todo México" } },
-        { "type": "item", "settings": { "icon": "🔒", "text": "Pago 100% seguro" } },
-        { "type": "item", "settings": { "icon": "📦", "text": "Empaque discreto" } }
+        { "type": "item", "settings": { "icon": "check", "text": "100% originales, garantizado" } },
+        { "type": "item", "settings": { "icon": "truck", "text": "Envío rápido a todo México" } },
+        { "type": "item", "settings": { "icon": "lock", "text": "Pago 100% seguro" } },
+        { "type": "item", "settings": { "icon": "box", "text": "Empaque discreto" } }
       ]
     }
   ]

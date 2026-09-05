@@ -15,10 +15,10 @@
     "ps-trust": {
       "type": "ps-trust",
       "blocks": {
-        "b1": { "type": "item", "settings": { "icon": "✓", "text": "100% originales, garantizado" } },
-        "b2": { "type": "item", "settings": { "icon": "🚚", "text": "Envío rápido a todo México" } },
-        "b3": { "type": "item", "settings": { "icon": "🔒", "text": "Pago 100% seguro" } },
-        "b4": { "type": "item", "settings": { "icon": "📦", "text": "Empaque discreto" } }
+        "b1": { "type": "item", "settings": { "icon": "check", "text": "100% originales, garantizado" } },
+        "b2": { "type": "item", "settings": { "icon": "truck", "text": "Envío rápido a todo México" } },
+        "b3": { "type": "item", "settings": { "icon": "lock", "text": "Pago 100% seguro" } },
+        "b4": { "type": "item", "settings": { "icon": "box", "text": "Empaque discreto" } }
       },
       "block_order": ["b1", "b2", "b3", "b4"],
       "settings": {}

@@ -13,10 +13,10 @@
   --ps-color-line-dark: rgba(217, 189, 140, 0.25);
   --ps-font-head: var(--font-heading-family, 'Playfair Display', serif);
   --ps-font-body: var(--font-body-family, 'Work Sans', sans-serif);
-  --ps-radius: 4px;
-  --ps-radius-lg: 18px;
+  --ps-radius: 0px;
+  --ps-radius-lg: 2px;
   --ps-gutter: 24px;
-  --ps-maxw: 1240px;
+  --ps-maxw: 1200px;
   --ps-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -30,22 +30,24 @@
 .ps-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-family: var(--ps-font-body);
-  font-size: 12px;
-  letter-spacing: 0.24em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--ps-color-gold);
-  margin: 0 0 14px;
+  margin: 0 0 16px;
 }
-.ps-eyebrow::before { content: ''; width: 28px; height: 1px; background: currentColor; display: inline-block; }
+.ps-eyebrow::before { content: ''; width: 32px; height: 1px; background: currentColor; display: inline-block; }
+.ps-eyebrow::after { content: ''; width: 32px; height: 1px; background: currentColor; display: none; }
 
 .ps-h1, .ps-h2, .ps-h3 {
   font-family: var(--ps-font-head);
   font-weight: 700;
-  line-height: 1.08;
+  line-height: 1.1;
   margin: 0 0 18px;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 .ps-h1 { font-size: clamp(34px, 5.4vw, 64px); }
 .ps-h2 { font-size: clamp(28px, 3.6vw, 44px); }
@@ -59,25 +61,25 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 15px 32px;
+  padding: 16px 34px;
   font-family: var(--ps-font-body);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   text-decoration: none;
   border-radius: var(--ps-radius);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: transform 0.35s var(--ps-ease), box-shadow 0.35s var(--ps-ease), background-color 0.35s var(--ps-ease), color 0.35s var(--ps-ease);
+  transition: transform 0.35s var(--ps-ease), box-shadow 0.35s var(--ps-ease), background-color 0.35s var(--ps-ease), color 0.35s var(--ps-ease), border-color 0.35s var(--ps-ease);
   white-space: nowrap;
 }
 .ps-btn--gold { background: var(--ps-color-gold); color: #17130f; }
-.ps-btn--gold:hover { background: var(--ps-color-gold-light); transform: translateY(-2px); box-shadow: 0 14px 28px -14px rgba(178, 138, 77, 0.65); }
-.ps-btn--outline { background: transparent; color: var(--ps-color-paper); border-color: rgba(255, 253, 248, 0.35); }
-.ps-btn--outline:hover { background: rgba(255, 253, 248, 0.1); border-color: var(--ps-color-gold-light); transform: translateY(-2px); }
-.ps-btn--dark { background: var(--ps-color-ink); color: var(--ps-color-paper); }
-.ps-btn--dark:hover { background: #2a241c; transform: translateY(-2px); }
+.ps-btn--gold:hover { background: var(--ps-color-gold-light); transform: translateY(-2px); box-shadow: 0 18px 32px -16px rgba(178, 138, 77, 0.6); }
+.ps-btn--outline { background: transparent; color: var(--ps-color-paper); border-color: rgba(255, 253, 248, 0.3); }
+.ps-btn--outline:hover { background: rgba(217, 189, 140, 0.08); border-color: var(--ps-color-gold-light); color: var(--ps-color-gold-light); transform: translateY(-2px); }
+.ps-btn--dark { background: transparent; color: var(--ps-color-ink); border-color: var(--ps-color-ink); }
+.ps-btn--dark:hover { background: var(--ps-color-ink); color: var(--ps-color-paper); transform: translateY(-2px); }
 .ps-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
 /* Reveal-on-scroll */
@@ -92,9 +94,19 @@
   background: var(--ps-color-paper);
   border-radius: var(--ps-radius-lg);
   border: 1px solid var(--ps-color-line);
+  border-top: 2px solid transparent;
   transition: transform 0.4s var(--ps-ease), box-shadow 0.4s var(--ps-ease), border-color 0.4s var(--ps-ease);
 }
-.ps-card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -30px rgba(23, 19, 15, 0.35); border-color: var(--ps-color-gold-light); }
+.ps-card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -30px rgba(23, 19, 15, 0.3); border-top-color: var(--ps-color-gold); }
+
+/* Elegant framing for Dawn's native product cards inside our grid */
+.ps-catalogo__grid .card,
+.ps-catalogo__grid .card-wrapper {
+  transition: transform 0.4s var(--ps-ease);
+}
+.ps-catalogo__grid > div { border-top: 2px solid transparent; transition: border-color 0.4s var(--ps-ease), transform 0.4s var(--ps-ease); }
+.ps-catalogo__grid > div:hover { border-top-color: var(--ps-color-gold); transform: translateY(-4px); }
+.ps-catalogo__grid .price { font-family: var(--ps-font-head); }
 
 /* Grid helpers */
 .ps-grid { display: grid; gap: 28px; }
