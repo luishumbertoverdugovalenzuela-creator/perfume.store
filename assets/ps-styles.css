@@ -136,27 +136,6 @@
   filter: drop-shadow(0 26px 20px rgba(23, 19, 15, 0.28));
   transition: transform 0.6s var(--ps-ease);
 }
-/* Force a predictable column layout (image on top, info below) for Dawn's
-   product card, regardless of the flex/absolute-overlay trick it uses
-   internally — that trick can make the title/price float on top of the
-   photo instead of sitting below it. */
-.card__inner.ratio {
-  display: flex;
-  flex-direction: column;
-}
-.card__inner.ratio .card__media {
-  position: relative !important;
-  top: auto;
-  bottom: auto;
-  aspect-ratio: 1 / 1;
-  flex: none;
-}
-.card__inner.ratio .card__content {
-  position: relative;
-  flex: none;
-  display: block;
-}
-
 .card-wrapper { display: block; border-top: 2px solid transparent; transition: border-color 0.4s var(--ps-ease), transform 0.4s var(--ps-ease); }
 .card-wrapper:hover { border-top-color: var(--ps-color-gold); transform: translateY(-4px); }
 .card-wrapper:hover .card__media img { transform: scale(1.05); }

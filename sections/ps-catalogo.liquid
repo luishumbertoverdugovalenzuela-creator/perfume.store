@@ -1,4 +1,5 @@
 {{ 'ps-styles.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
 
 {% style %}
   #shopify-section-{{ section.id }} {
@@ -29,15 +30,24 @@
 
     <div class="ps-grid ps-grid--4 ps-catalogo__grid">
       {%- for product in ps_collection.products limit: section.settings.product_count -%}
-        <div class="ps-reveal" data-ps-delay="{{ forloop.index0 | times: 60 }}">
-          {% render 'card-product',
-            card_product: product,
-            media_aspect_ratio: 'square',
-            show_vendor: section.settings.show_vendor,
-            quick_add: false,
-            section_id: section.id
-          %}
-        </div>
+        <a href="{{ product.url }}" class="ps-prodcard ps-reveal" data-ps-delay="{{ forloop.index0 | times: 60 }}">
+          <span class="ps-prodcard__media">
+            {%- if product.featured_image != blank -%}
+              <img src="{{ product.featured_image | image_url: width: 600 }}"
+                   alt="{{ product.featured_image.alt | escape }}"
+                   width="600" height="600" loading="lazy">
+            {%- endif -%}
+          </span>
+          <span class="ps-prodcard__info">
+            {%- if section.settings.show_vendor and product.vendor != blank -%}
+              <span class="ps-prodcard__vendor">{{ product.vendor }}</span>
+            {%- endif -%}
+            <span class="ps-prodcard__title">{{ product.title }}</span>
+            <span class="ps-prodcard__price">
+              {%- render 'price', product: product, use_variant: false -%}
+            </span>
+          </span>
+        </a>
       {%- endfor -%}
     </div>
 
@@ -52,6 +62,47 @@
 <style>
   #shopify-section-{{ section.id }} .ps-catalogo__head { margin-bottom: 44px; }
   #shopify-section-{{ section.id }} .ps-catalogo__cta { text-align: center; margin-top: 44px; }
+
+  #shopify-section-{{ section.id }} .ps-prodcard {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    border-top: 2px solid transparent;
+    transition: border-color 0.4s var(--ps-ease), transform 0.4s var(--ps-ease);
+  }
+  #shopify-section-{{ section.id }} .ps-prodcard:hover { border-top-color: var(--ps-color-gold); transform: translateY(-4px); }
+  #shopify-section-{{ section.id }} .ps-prodcard__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    background: var(--ps-color-surface);
+    overflow: hidden;
+  }
+  #shopify-section-{{ section.id }} .ps-prodcard__media::before {
+    content: '';
+    position: absolute;
+    inset: 8%;
+    background: radial-gradient(circle, rgba(178, 138, 77, 0.22) 0%, rgba(178, 138, 77, 0) 68%);
+    z-index: 0;
+  }
+  #shopify-section-{{ section.id }} .ps-prodcard__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
+    filter: drop-shadow(0 26px 20px rgba(0, 0, 0, 0.4));
+    transition: transform 0.6s var(--ps-ease);
+  }
+  #shopify-section-{{ section.id }} .ps-prodcard:hover .ps-prodcard__media img { transform: scale(1.05); }
+  #shopify-section-{{ section.id }} .ps-prodcard__info { display: flex; flex-direction: column; gap: 6px; padding: 18px 4px 0; }
+  #shopify-section-{{ section.id }} .ps-prodcard__vendor { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ps-color-gold); }
+  #shopify-section-{{ section.id }} .ps-prodcard__title { font-size: 15px; line-height: 1.4; color: var(--ps-color-ink); transition: color 0.3s var(--ps-ease); }
+  #shopify-section-{{ section.id }} .ps-prodcard:hover .ps-prodcard__title { color: var(--ps-color-gold); }
+  #shopify-section-{{ section.id }} .ps-prodcard__price { font-family: var(--ps-font-head); font-size: 16px; color: var(--ps-color-ink); }
+  #shopify-section-{{ section.id }} .ps-prodcard__price .price { font-family: inherit; }
 </style>
 
 {% schema %}
