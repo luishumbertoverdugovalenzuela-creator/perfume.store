@@ -22,7 +22,7 @@
         assign all_media = product.media | default: product.images
         assign has_cutout = false
         for m in all_media
-          if m.src contains '-cutout.'
+          if m.src contains 'cutout'
             assign has_cutout = true
             break
           endif
@@ -30,7 +30,7 @@
         assign cutout_count = 0
         if has_cutout
           for m in all_media
-            if m.src contains '-cutout.'
+            if m.src contains 'cutout'
               assign cutout_count = cutout_count | plus: 1
             endif
           endfor
@@ -41,7 +41,7 @@
       <div class="ps-producto__main">
         {%- if all_media.size > 0 -%}
           {%- for m in all_media -%}
-            {%- if has_cutout and m.src contains '-cutout.' or has_cutout == false -%}
+            {%- if has_cutout and m.src contains 'cutout' or has_cutout == false -%}
               <img data-ps-gallery-main src="{{ m | image_url: width: 900 }}" alt="{{ m.alt | escape }}" loading="eager" fetchpriority="high">
               {%- break -%}
             {%- endif -%}
@@ -54,7 +54,7 @@
         <div class="ps-producto__thumbs">
           {%- assign thumb_index = 0 -%}
           {%- for m in all_media -%}
-            {%- if has_cutout and m.src contains '-cutout.' or has_cutout == false -%}
+            {%- if has_cutout and m.src contains 'cutout' or has_cutout == false -%}
               <button type="button" class="ps-producto__thumb{% if thumb_index == 0 %} is-active{% endif %}" data-ps-gallery-thumb data-full="{{ m | image_url: width: 900 }}">
                 <img src="{{ m | image_url: width: 160 }}" alt="{{ m.alt | escape }}" loading="lazy">
               </button>

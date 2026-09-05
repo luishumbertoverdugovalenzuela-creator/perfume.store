@@ -15,6 +15,14 @@ Para cada producto activo:
   3. Agrega una sombra elíptica difuminada bajo el frasco.
   4. Sube la nueva imagen como "<id>-cutout.png", la reordena a la
      posición 0 y borra el/los recorte(s) anteriores del producto.
+
+Nota: si Shopify ya tiene un archivo con ese mismo nombre (p. ej. de
+una corrida anterior de este script), le agrega un sufijo aleatorio
+a la URL final (ej. "<id>-cutout_ab12cd34-....png"). Por eso toda
+detección de "es este el recorte" debe usar el substring suelto
+"cutout", nunca "-cutout." (con el punto), que deja de coincidir en
+cuanto aparece el sufijo. El mismo detalle aplica al Liquid de
+sections/ps-producto.liquid.
 """
 import json
 import os
@@ -107,7 +115,7 @@ def list_products():
                 img = m.get("image")
                 if not img:
                     continue
-                if "-cutout." in img["url"]:
+                if "cutout" in img["url"]:
                     cutout_ids.append(m["id"])
                 elif original_url is None:
                     original_url = img["url"]
