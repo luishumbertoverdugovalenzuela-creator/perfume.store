@@ -161,6 +161,15 @@
 /* Fix Dawn header margin gap */
 .section-header { margin-bottom: 0 !important; }
 
+/* Add-to-cart click feedback */
+@keyframes ps-pulse {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+.ps-pulse { animation: ps-pulse 0.35s var(--ps-ease); }
+@media (prefers-reduced-motion: reduce) { .ps-pulse { animation: none; } }
+
 /* Marquee */
 .ps-marquee { overflow-x: clip; overflow-y: visible; }
 .ps-marquee__track { display: flex; gap: 48px; width: max-content; animation: ps-scroll linear infinite; }

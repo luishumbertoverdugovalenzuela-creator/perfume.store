@@ -30,8 +30,8 @@
 
     <div class="ps-grid ps-grid--4 ps-catalogo__grid">
       {%- for product in ps_collection.products limit: section.settings.product_count -%}
-        <a href="{{ product.url }}" class="ps-prodcard ps-reveal" data-ps-delay="{{ forloop.index0 | times: 60 }}">
-          <span class="ps-prodcard__media">
+        <a href="{{ product.url }}" class="ps-prodcard ps-reveal" data-ps-delay="{{ forloop.index0 | times: 60 }}" data-ps-tilt>
+          <span class="ps-prodcard__media" data-ps-tilt-target>
             {%- if product.featured_image != blank -%}
               <img src="{{ product.featured_image | image_url: width: 600 }}"
                    alt="{{ product.featured_image.alt | escape }}"
@@ -79,6 +79,9 @@
     background: var(--ps-color-surface);
     border: 1px solid var(--ps-color-line-dark);
     overflow: hidden;
+    transition: transform 0.2s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
   }
   #shopify-section-{{ section.id }} .ps-prodcard__media::before {
     content: '';

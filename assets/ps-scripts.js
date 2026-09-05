@@ -54,10 +54,38 @@
       gallery.querySelectorAll('[data-ps-gallery-thumb]').forEach(function (thumb) {
         thumb.addEventListener('click', function () {
           var full = thumb.getAttribute('data-full');
-          if (main && full) main.src = full;
+          if (main && full) {
+            main.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+            main.style.opacity = '0';
+            main.style.transform = 'scale(0.97)';
+            setTimeout(function () {
+              main.src = full;
+              main.style.opacity = '1';
+              main.style.transform = 'scale(1)';
+            }, 180);
+          }
           gallery.querySelectorAll('[data-ps-gallery-thumb]').forEach(function (t) { t.classList.remove('is-active'); });
           thumb.classList.add('is-active');
         });
+      });
+    });
+  }
+
+  function initTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(hover: none)').matches) return;
+    document.querySelectorAll('[data-ps-tilt]').forEach(function (card) {
+      if (card.dataset.psTiltBound) return;
+      card.dataset.psTiltBound = '1';
+      var media = card.querySelector('[data-ps-tilt-target]') || card;
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var px = (e.clientX - rect.left) / rect.width - 0.5;
+        var py = (e.clientY - rect.top) / rect.height - 0.5;
+        media.style.transform = 'perspective(700px) rotateX(' + (py * -10).toFixed(2) + 'deg) rotateY(' + (px * 10).toFixed(2) + 'deg) scale(1.04)';
+      });
+      card.addEventListener('mouseleave', function () {
+        media.style.transform = '';
       });
     });
   }
@@ -124,12 +152,26 @@
     });
   }
 
+  function initAddToCartPulse() {
+    document.querySelectorAll('[data-ps-submit]').forEach(function (btn) {
+      if (btn.dataset.psPulseBound) return;
+      btn.dataset.psPulseBound = '1';
+      btn.addEventListener('click', function () {
+        btn.classList.remove('ps-pulse');
+        void btn.offsetWidth;
+        btn.classList.add('ps-pulse');
+      });
+    });
+  }
+
   function initAll() {
     initReveal();
     initMarquee();
     initFaq();
     initProductGallery();
     initVariantPicker();
+    initTilt();
+    initAddToCartPulse();
   }
 
   if (document.readyState === 'loading') {
