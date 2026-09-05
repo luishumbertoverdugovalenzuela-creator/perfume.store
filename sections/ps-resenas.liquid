@@ -1,0 +1,81 @@
+{{ 'ps-styles.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ps-scripts.js' | asset_url }}" defer></script>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--ps-color-surface);
+  }
+{% endstyle %}
+
+<section class="ps-section ps-dark ps-resenas">
+  <div class="ps-container">
+    <div class="ps-resenas__head ps-reveal" style="text-align:center;">
+      <p class="ps-eyebrow" style="justify-content:center;">{{ section.settings.eyebrow }}</p>
+      <h2 class="ps-h2">{{ section.settings.title }}</h2>
+    </div>
+  </div>
+
+  <div class="ps-container ps-marquee ps-reveal" data-ps-delay="100">
+    <div class="ps-marquee__track" data-ps-marquee data-ps-speed="{{ section.settings.speed }}">
+      {%- for block in section.blocks -%}
+        <div class="ps-resena-card" {{ block.shopify_attributes }}>
+          <div class="ps-resena-card__stars">{% for i in (1..5) %}★{% endfor %}</div>
+          <p class="ps-resena-card__quote">“{{ block.settings.quote }}”</p>
+          <p class="ps-resena-card__author">{{ block.settings.author }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .ps-resenas__head { margin-bottom: 44px; }
+  #shopify-section-{{ section.id }} .ps-resena-card {
+    flex: 0 0 320px;
+    background: var(--ps-color-surface-2);
+    border: 1px solid var(--ps-color-line-dark);
+    border-radius: 14px;
+    padding: 28px;
+  }
+  #shopify-section-{{ section.id }} .ps-resena-card__stars { color: var(--ps-color-gold); letter-spacing: 4px; margin-bottom: 14px; }
+  #shopify-section-{{ section.id }} .ps-resena-card__quote { font-size: 15px; line-height: 1.7; color: rgba(255,253,248,0.85); margin: 0 0 18px; }
+  #shopify-section-{{ section.id }} .ps-resena-card__author { font-size: 13px; color: var(--ps-color-gold-light); margin: 0; }
+</style>
+
+{% schema %}
+{
+  "name": "PS – Reseñas",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Lo que dicen" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Clientes satisfechos" },
+    { "type": "range", "id": "speed", "label": "Velocidad del carrusel (segundos)", "min": 10, "max": 60, "step": 2, "default": 32 },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Reseña",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Texto de la reseña", "default": "Llegó justo como en la foto, huele increíble y el precio no se compara con el de las tiendas departamentales." },
+        { "type": "text", "id": "author", "label": "Autor", "default": "Cliente verificado" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PS – Reseñas",
+      "blocks": [
+        { "type": "review", "settings": { "quote": "Llegó justo como en la foto, huele increíble y el precio no se compara con el de las tiendas departamentales.", "author": "Carlos R." } },
+        { "type": "review", "settings": { "quote": "Rapidísimo el envío y perfume 100% original. Ya voy en mi tercera compra.", "author": "Miguel A." } },
+        { "type": "review", "settings": { "quote": "Excelente atención y el empaque llegó perfecto, sin ningún golpe.", "author": "Daniel S." } },
+        { "type": "review", "settings": { "quote": "El mejor precio que encontré para este perfume, y es totalmente original.", "author": "Jorge L." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

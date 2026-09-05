@@ -1,0 +1,79 @@
+{{ 'ps-styles.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--ps-color-bg);
+  }
+  #shopify-section-{{ section.id }} .ps-h2 { text-align: {{ section.settings.text_align }}; }
+{% endstyle %}
+
+{%- liquid
+  if section.settings.collection != blank
+    assign ps_collection = section.settings.collection
+  else
+    assign ps_collection = collections.all
+  endif
+-%}
+
+<section class="ps-section ps-catalogo">
+  <div class="ps-container">
+    <div class="ps-catalogo__head ps-reveal">
+      <p class="ps-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="ps-h2">{{ section.settings.title }}</h2>
+      {%- if section.settings.body != blank -%}
+        <p class="ps-body">{{ section.settings.body }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="ps-grid ps-grid--4 ps-catalogo__grid">
+      {%- for product in ps_collection.products limit: section.settings.product_count -%}
+        <div class="ps-reveal" data-ps-delay="{{ forloop.index0 | times: 60 }}">
+          {% render 'card-product',
+            card_product: product,
+            media_aspect_ratio: 'square',
+            show_vendor: section.settings.show_vendor,
+            quick_add: false,
+            section_id: section.id
+          %}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.button_text != blank -%}
+      <div class="ps-catalogo__cta ps-reveal">
+        <a href="{{ section.settings.button_url | default: '/collections/all' }}" class="ps-btn ps-btn--dark">{{ section.settings.button_text }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .ps-catalogo__head { margin-bottom: 44px; }
+  #shopify-section-{{ section.id }} .ps-catalogo__cta { text-align: center; margin-top: 44px; }
+</style>
+
+{% schema %}
+{
+  "name": "PS – Catálogo",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Nuestra colección" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Encuentra tu fragancia" },
+    { "type": "textarea", "id": "body", "label": "Texto" },
+    { "type": "select", "id": "text_align", "label": "Alineación del título",
+      "options": [ {"value":"left","label":"Izquierda"}, {"value":"center","label":"Centro"} ], "default": "center" },
+    { "type": "collection", "id": "collection", "label": "Colección a mostrar (vacío = todos los productos)" },
+    { "type": "range", "id": "product_count", "label": "Cuántos productos mostrar", "min": 4, "max": 16, "step": 4, "default": 8 },
+    { "type": "checkbox", "id": "show_vendor", "label": "Mostrar marca", "default": true },
+    { "type": "header", "content": "Botón" },
+    { "type": "text", "id": "button_text", "label": "Texto del botón", "default": "Ver todo el catálogo" },
+    { "type": "url", "id": "button_url", "label": "Enlace del botón" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "presets": [ { "name": "PS – Catálogo" } ]
+}
+{% endschema %}

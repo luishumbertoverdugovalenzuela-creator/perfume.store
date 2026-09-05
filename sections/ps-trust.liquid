@@ -1,0 +1,73 @@
+{{ 'ps-styles.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--ps-color-bg-alt);
+  }
+{% endstyle %}
+
+<section class="ps-section ps-trust">
+  <div class="ps-container ps-trust__row">
+    {%- for block in section.blocks -%}
+      <div class="ps-trust__item ps-reveal" data-ps-delay="{{ forloop.index0 | times: 80 }}" {{ block.shopify_attributes }}>
+        <span class="ps-trust__icon">{{ block.settings.icon }}</span>
+        <span class="ps-trust__text">{{ block.settings.text }}</span>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .ps-trust__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px 0;
+  }
+  #shopify-section-{{ section.id }} .ps-trust__item {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; letter-spacing: 0.02em; color: var(--ps-color-ink);
+    flex: 1 1 200px;
+  }
+  #shopify-section-{{ section.id }} .ps-trust__icon { font-size: 20px; color: var(--ps-color-gold); }
+  @media screen and (max-width: 540px) {
+    #shopify-section-{{ section.id }} .ps-trust__row { justify-content: center; text-align: center; }
+    #shopify-section-{{ section.id }} .ps-trust__item { flex: 1 1 100%; justify-content: center; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PS – Franja de confianza",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 16 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 16 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Elemento",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icono (emoji)", "default": "✓" },
+        { "type": "text", "id": "text", "label": "Texto", "default": "100% originales" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PS – Franja de confianza",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "✓", "text": "100% originales, garantizado" } },
+        { "type": "item", "settings": { "icon": "🚚", "text": "Envío rápido a todo México" } },
+        { "type": "item", "settings": { "icon": "🔒", "text": "Pago 100% seguro" } },
+        { "type": "item", "settings": { "icon": "📦", "text": "Empaque discreto" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

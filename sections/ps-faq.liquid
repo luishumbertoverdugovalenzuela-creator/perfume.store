@@ -1,0 +1,86 @@
+{{ 'ps-styles.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ps-scripts.js' | asset_url }}" defer></script>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--ps-color-bg);
+  }
+{% endstyle %}
+
+<section class="ps-section ps-faq">
+  <div class="ps-container ps-faq__grid">
+    <div class="ps-reveal">
+      <p class="ps-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="ps-h2">{{ section.settings.title }}</h2>
+      {%- if section.settings.body != blank -%}<p class="ps-body">{{ section.settings.body }}</p>{%- endif -%}
+    </div>
+    <div class="ps-faq__list ps-reveal" data-ps-delay="100" data-ps-faq>
+      {%- for block in section.blocks -%}
+        <div class="ps-faq__item" data-ps-faq-item data-open="{% if forloop.first %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>
+          <button type="button" class="ps-faq__trigger" data-ps-faq-trigger>
+            <span>{{ block.settings.question }}</span>
+            <span class="ps-faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="ps-faq__answer"><p>{{ block.settings.answer }}</p></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .ps-faq__grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 56px; align-items: start; }
+  #shopify-section-{{ section.id }} .ps-faq__item { border-bottom: 1px solid var(--ps-color-line); }
+  #shopify-section-{{ section.id }} .ps-faq__trigger {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: none; border: none; cursor: pointer; padding: 20px 0;
+    font-family: var(--ps-font-body); font-size: 16px; font-weight: 600; color: var(--ps-color-ink); text-align: left;
+  }
+  #shopify-section-{{ section.id }} .ps-faq__icon { color: var(--ps-color-gold); font-size: 20px; transition: transform 0.3s var(--ps-ease); flex-shrink: 0; margin-left: 16px; }
+  #shopify-section-{{ section.id }} .ps-faq__item[data-open="true"] .ps-faq__icon { transform: rotate(45deg); }
+  #shopify-section-{{ section.id }} .ps-faq__answer { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.35s var(--ps-ease), opacity 0.3s var(--ps-ease); }
+  #shopify-section-{{ section.id }} .ps-faq__answer p { overflow: hidden; margin: 0; padding-right: 40px; color: var(--ps-color-ink-soft); font-size: 15px; line-height: 1.7; }
+  #shopify-section-{{ section.id }} .ps-faq__item[data-open="true"] .ps-faq__answer { grid-template-rows: 1fr; opacity: 1; padding-bottom: 20px; }
+  #shopify-section-{{ section.id }} .ps-faq__answer > p { min-height: 0; }
+  @media screen and (max-width: 990px) {
+    #shopify-section-{{ section.id }} .ps-faq__grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PS – Preguntas frecuentes",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Dudas frecuentes" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Preguntas frecuentes" },
+    { "type": "textarea", "id": "body", "label": "Texto" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "¿Los perfumes son originales?" },
+        { "type": "textarea", "id": "answer", "label": "Respuesta", "default": "Sí, todos nuestros perfumes son 100% originales y provienen de distribuidores autorizados." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PS – Preguntas frecuentes",
+      "blocks": [
+        { "type": "faq", "settings": { "question": "¿Los perfumes son originales?", "answer": "Sí, todos nuestros perfumes son 100% originales y provienen de distribuidores autorizados. Si no quedas satisfecho, te devolvemos tu dinero." } },
+        { "type": "faq", "settings": { "question": "¿Cuánto tarda el envío?", "answer": "El envío estándar tarda entre 24 y 72 horas hábiles dependiendo de tu ubicación." } },
+        { "type": "faq", "settings": { "question": "¿Puedo devolver mi pedido?", "answer": "Sí, cuentas con 30 días para solicitar un cambio o devolución. Consulta nuestra política de devoluciones." } },
+        { "type": "faq", "settings": { "question": "¿El empaque revela el contenido?", "answer": "No, todos los pedidos se envían en empaque discreto sin ninguna marca visible en el exterior." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

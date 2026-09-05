@@ -1,0 +1,122 @@
+/* Perfume Store — design tokens & shared styles */
+:root {
+  --ps-color-bg: #f7f2e9;
+  --ps-color-bg-alt: #efe6d5;
+  --ps-color-surface: #16130f;
+  --ps-color-surface-2: #201b15;
+  --ps-color-ink: #17130f;
+  --ps-color-ink-soft: #4a443c;
+  --ps-color-paper: #fffdf8;
+  --ps-color-gold: #b28a4d;
+  --ps-color-gold-light: #d9bd8c;
+  --ps-color-line: rgba(23, 19, 15, 0.12);
+  --ps-color-line-dark: rgba(217, 189, 140, 0.25);
+  --ps-font-head: var(--font-heading-family, 'Playfair Display', serif);
+  --ps-font-body: var(--font-body-family, 'Work Sans', sans-serif);
+  --ps-radius: 4px;
+  --ps-radius-lg: 18px;
+  --ps-gutter: 24px;
+  --ps-maxw: 1240px;
+  --ps-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ps-section { padding-top: 0; padding-bottom: 0; font-family: var(--ps-font-body); color: var(--ps-color-ink); }
+.ps-container { max-width: var(--ps-maxw); margin: 0 auto; padding: 0 var(--ps-gutter); }
+
+.ps-dark { background: var(--ps-color-surface); color: var(--ps-color-paper); }
+.ps-dark .ps-eyebrow { color: var(--ps-color-gold-light); }
+.ps-dark .ps-body { color: rgba(255, 253, 248, 0.75); }
+
+.ps-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ps-font-body);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ps-color-gold);
+  margin: 0 0 14px;
+}
+.ps-eyebrow::before { content: ''; width: 28px; height: 1px; background: currentColor; display: inline-block; }
+
+.ps-h1, .ps-h2, .ps-h3 {
+  font-family: var(--ps-font-head);
+  font-weight: 700;
+  line-height: 1.08;
+  margin: 0 0 18px;
+  letter-spacing: -0.01em;
+}
+.ps-h1 { font-size: clamp(34px, 5.4vw, 64px); }
+.ps-h2 { font-size: clamp(28px, 3.6vw, 44px); }
+.ps-h3 { font-size: clamp(20px, 2.4vw, 26px); }
+
+.ps-body { font-size: 16px; line-height: 1.7; color: var(--ps-color-ink-soft); margin: 0 0 20px; }
+.ps-body:last-child { margin-bottom: 0; }
+
+.ps-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 32px;
+  font-family: var(--ps-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--ps-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.35s var(--ps-ease), box-shadow 0.35s var(--ps-ease), background-color 0.35s var(--ps-ease), color 0.35s var(--ps-ease);
+  white-space: nowrap;
+}
+.ps-btn--gold { background: var(--ps-color-gold); color: #17130f; }
+.ps-btn--gold:hover { background: var(--ps-color-gold-light); transform: translateY(-2px); box-shadow: 0 14px 28px -14px rgba(178, 138, 77, 0.65); }
+.ps-btn--outline { background: transparent; color: var(--ps-color-paper); border-color: rgba(255, 253, 248, 0.35); }
+.ps-btn--outline:hover { background: rgba(255, 253, 248, 0.1); border-color: var(--ps-color-gold-light); transform: translateY(-2px); }
+.ps-btn--dark { background: var(--ps-color-ink); color: var(--ps-color-paper); }
+.ps-btn--dark:hover { background: #2a241c; transform: translateY(-2px); }
+.ps-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+/* Reveal-on-scroll */
+.ps-reveal { opacity: 0; transform: translateY(28px) scale(0.98); transition: opacity 0.9s var(--ps-ease), transform 0.9s var(--ps-ease); will-change: opacity, transform; }
+.ps-reveal.ps-visible { opacity: 1; transform: translateY(0) scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .ps-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* Card */
+.ps-card {
+  background: var(--ps-color-paper);
+  border-radius: var(--ps-radius-lg);
+  border: 1px solid var(--ps-color-line);
+  transition: transform 0.4s var(--ps-ease), box-shadow 0.4s var(--ps-ease), border-color 0.4s var(--ps-ease);
+}
+.ps-card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -30px rgba(23, 19, 15, 0.35); border-color: var(--ps-color-gold-light); }
+
+/* Grid helpers */
+.ps-grid { display: grid; gap: 28px; }
+.ps-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.ps-grid--4 { grid-template-columns: repeat(4, 1fr); }
+.ps-grid--2 { grid-template-columns: repeat(2, 1fr); }
+
+@media screen and (max-width: 990px) {
+  .ps-grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .ps-grid--3 { grid-template-columns: repeat(2, 1fr); }
+  .ps-grid--2 { grid-template-columns: 1fr; gap: 40px; }
+}
+@media screen and (max-width: 540px) {
+  .ps-grid--4, .ps-grid--3 { grid-template-columns: 1fr; }
+  :root { --ps-gutter: 18px; }
+}
+
+/* Fix Dawn header margin gap */
+.section-header { margin-bottom: 0 !important; }
+
+/* Marquee */
+.ps-marquee { overflow-x: clip; overflow-y: visible; }
+.ps-marquee__track { display: flex; gap: 48px; width: max-content; animation: ps-scroll linear infinite; }
+@keyframes ps-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .ps-marquee__track { animation: none; } }

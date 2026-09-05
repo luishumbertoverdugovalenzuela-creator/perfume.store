@@ -1,75 +1,87 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
-          }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "button"
-      ],
+    "ps-hero": {
+      "type": "ps-hero",
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "eyebrow": "Perfumería de diseñador",
+        "title": "Fragancias originales para hombre, a precios justos",
+        "body": "Explora nuestra selección de perfumes 100% originales de las mejores casas de moda del mundo, con envío rápido y garantía de autenticidad.",
+        "button_text": "Ver catálogo",
+        "button_url": "/collections/all",
+        "button2_text": "",
+        "button2_url": ""
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "ps-trust": {
+      "type": "ps-trust",
+      "blocks": {
+        "b1": { "type": "item", "settings": { "icon": "✓", "text": "100% originales, garantizado" } },
+        "b2": { "type": "item", "settings": { "icon": "🚚", "text": "Envío rápido a todo México" } },
+        "b3": { "type": "item", "settings": { "icon": "🔒", "text": "Pago 100% seguro" } },
+        "b4": { "type": "item", "settings": { "icon": "📦", "text": "Empaque discreto" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"],
+      "settings": {}
+    },
+    "ps-catalogo": {
+      "type": "ps-catalogo",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "eyebrow": "Nuestra colección",
+        "title": "Encuentra tu fragancia",
+        "body": "Marcas como Yves Saint Laurent, Versace, Jean Paul Gaultier, Giorgio Armani y más — todas 100% originales.",
+        "text_align": "center",
+        "product_count": 8,
+        "show_vendor": true,
+        "button_text": "Ver todo el catálogo",
+        "button_url": "/collections/all"
+      }
+    },
+    "ps-historia": {
+      "type": "ps-historia",
+      "blocks": {
+        "s1": { "type": "stat", "settings": { "number": "100%", "label": "Originales" } },
+        "s2": { "type": "stat", "settings": { "number": "+10", "label": "Marcas de diseñador" } },
+        "s3": { "type": "stat", "settings": { "number": "24-48h", "label": "Envío" } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {
+        "eyebrow": "Sobre nosotros",
+        "title": "Perfumería seleccionada con cuidado",
+        "body": "Trabajamos directo con distribuidores autorizados para traerte fragancias 100% originales de las casas de moda más reconocidas, a precios que sí puedes pagar.",
+        "button_text": "Ver catálogo",
+        "button_url": "/collections/all"
+      }
+    },
+    "ps-resenas": {
+      "type": "ps-resenas",
+      "blocks": {
+        "r1": { "type": "review", "settings": { "quote": "Llegó justo como en la foto, huele increíble y el precio no se compara con el de las tiendas departamentales.", "author": "Carlos R." } },
+        "r2": { "type": "review", "settings": { "quote": "Rapidísimo el envío y perfume 100% original. Ya voy en mi tercera compra.", "author": "Miguel A." } },
+        "r3": { "type": "review", "settings": { "quote": "Excelente atención y el empaque llegó perfecto, sin ningún golpe.", "author": "Daniel S." } },
+        "r4": { "type": "review", "settings": { "quote": "El mejor precio que encontré para este perfume, y es totalmente original.", "author": "Jorge L." } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4"],
+      "settings": {
+        "eyebrow": "Lo que dicen",
+        "title": "Clientes satisfechos",
+        "speed": 32
+      }
+    },
+    "ps-faq": {
+      "type": "ps-faq",
+      "blocks": {
+        "f1": { "type": "faq", "settings": { "question": "¿Los perfumes son originales?", "answer": "Sí, todos nuestros perfumes son 100% originales y provienen de distribuidores autorizados. Si no quedas satisfecho, te devolvemos tu dinero." } },
+        "f2": { "type": "faq", "settings": { "question": "¿Cuánto tarda el envío?", "answer": "El envío estándar tarda entre 24 y 72 horas hábiles dependiendo de tu ubicación." } },
+        "f3": { "type": "faq", "settings": { "question": "¿Puedo devolver mi pedido?", "answer": "Sí, cuentas con 30 días para solicitar un cambio o devolución. Consulta nuestra política de devoluciones." } },
+        "f4": { "type": "faq", "settings": { "question": "¿El empaque revela el contenido?", "answer": "No, todos los pedidos se envían en empaque discreto sin ninguna marca visible en el exterior." } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4"],
+      "settings": {
+        "eyebrow": "Dudas frecuentes",
+        "title": "Preguntas frecuentes",
+        "body": ""
       }
     }
   },
-  "order": [
-    "image_banner",
-    "featured_collection"
-  ]
+  "order": ["ps-hero", "ps-trust", "ps-catalogo", "ps-historia", "ps-resenas", "ps-faq"]
 }

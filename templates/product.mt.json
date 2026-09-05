@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "principal": { "type": "ps-producto", "settings": {} },
+    "resenas": {
+      "type": "ps-resenas",
+      "blocks": {
+        "r1": { "type": "review", "settings": { "quote": "Llegó justo como en la foto, huele increíble y el precio no se compara con el de las tiendas departamentales.", "author": "Carlos R." } },
+        "r2": { "type": "review", "settings": { "quote": "Rapidísimo el envío y perfume 100% original. Ya voy en mi tercera compra.", "author": "Miguel A." } },
+        "r3": { "type": "review", "settings": { "quote": "Excelente atención y el empaque llegó perfecto, sin ningún golpe.", "author": "Daniel S." } }
+      },
+      "block_order": ["r1", "r2", "r3"],
+      "settings": { "eyebrow": "Lo que dicen", "title": "Clientes satisfechos" }
+    },
+    "faq": {
+      "type": "ps-faq",
+      "blocks": {
+        "f1": { "type": "faq", "settings": { "question": "¿Los perfumes son originales?", "answer": "Sí, todos nuestros perfumes son 100% originales y provienen de distribuidores autorizados." } },
+        "f2": { "type": "faq", "settings": { "question": "¿Cuánto tarda el envío?", "answer": "El envío estándar tarda entre 24 y 72 horas hábiles dependiendo de tu ubicación." } },
+        "f3": { "type": "faq", "settings": { "question": "¿Puedo devolver mi pedido?", "answer": "Sí, cuentas con 30 días para solicitar un cambio o devolución." } }
+      },
+      "block_order": ["f1", "f2", "f3"],
+      "settings": { "eyebrow": "Dudas frecuentes", "title": "Preguntas frecuentes" }
+    }
+  },
+  "order": ["principal", "resenas", "faq"]
+}

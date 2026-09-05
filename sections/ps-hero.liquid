@@ -1,0 +1,89 @@
+{{ 'ps-styles.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ps-scripts.js' | asset_url }}" defer></script>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--ps-color-surface);
+  }
+  #shopify-section-{{ section.id }} .ps-hero__eyebrow { color: var(--ps-color-gold-light); }
+  #shopify-section-{{ section.id }} .ps-hero__title { font-size: {{ section.settings.title_size }}px; }
+  #shopify-section-{{ section.id }} .ps-hero__body { font-size: {{ section.settings.body_size }}px; }
+{% endstyle %}
+
+<section class="ps-section ps-dark ps-hero-section" style="overflow-x: clip;">
+  <div class="ps-container ps-hero__grid">
+    <div class="ps-hero__copy ps-reveal">
+      <p class="ps-eyebrow ps-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1 class="ps-h1 ps-hero__title">{{ section.settings.title }}</h1>
+      <p class="ps-body ps-hero__body">{{ section.settings.body | newline_to_br }}</p>
+      <div class="ps-hero__ctas">
+        {%- if section.settings.button_text != blank -%}
+          <a href="{{ section.settings.button_url | default: '#' }}" class="ps-btn ps-btn--gold">{{ section.settings.button_text }}</a>
+        {%- endif -%}
+        {%- if section.settings.button2_text != blank -%}
+          <a href="{{ section.settings.button2_url | default: '#' }}" class="ps-btn ps-btn--outline">{{ section.settings.button2_text }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="ps-hero__media ps-reveal" data-ps-delay="120">
+      <div class="ps-hero__glow" aria-hidden="true"></div>
+      {%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 900 }}" alt="{{ section.settings.image.alt | escape }}" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" loading="eager" fetchpriority="high">
+      {%- else -%}
+        <img src="{{ 'ps-hero-bottle.png' | asset_url }}" alt="" loading="eager" fetchpriority="high">
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .ps-hero__grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 40px;
+    min-height: 560px;
+    padding: 64px 0;
+  }
+  #shopify-section-{{ section.id }} .ps-hero__ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+  #shopify-section-{{ section.id }} .ps-hero__media { position: relative; display: flex; align-items: center; justify-content: center; }
+  #shopify-section-{{ section.id }} .ps-hero__media img { position: relative; z-index: 1; max-width: 100%; height: auto; max-height: 520px; filter: drop-shadow(0 40px 60px rgba(0,0,0,0.55)); }
+  #shopify-section-{{ section.id }} .ps-hero__glow {
+    position: absolute; width: 70%; height: 70%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(178,138,77,0.35) 0%, rgba(178,138,77,0) 70%);
+    filter: blur(10px);
+  }
+  @media screen and (max-width: 990px) {
+    #shopify-section-{{ section.id }} .ps-hero__grid { grid-template-columns: 1fr; text-align: center; padding: 48px 0; min-height: auto; }
+    #shopify-section-{{ section.id }} .ps-hero__ctas { justify-content: center; }
+    #shopify-section-{{ section.id }} .ps-hero__media { order: -1; }
+    #shopify-section-{{ section.id }} .ps-hero__media img { max-height: 340px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PS – Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Perfumería de diseñador" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Fragancias originales para hombre, a precios justos" },
+    { "type": "textarea", "id": "body", "label": "Texto", "default": "Explora nuestra selección de perfumes de las mejores casas de moda del mundo. 100% originales, garantizados." },
+    { "type": "image_picker", "id": "image", "label": "Imagen del producto destacado" },
+    { "type": "header", "content": "Botones" },
+    { "type": "text", "id": "button_text", "label": "Texto del botón principal", "default": "Ver catálogo" },
+    { "type": "url", "id": "button_url", "label": "Enlace del botón principal" },
+    { "type": "text", "id": "button2_text", "label": "Texto del botón secundario" },
+    { "type": "url", "id": "button2_url", "label": "Enlace del botón secundario" },
+    { "type": "header", "content": "Tipografía" },
+    { "type": "range", "id": "title_size", "label": "Tamaño del título (px)", "min": 28, "max": 80, "step": 2, "unit": "px", "default": 54 },
+    { "type": "range", "id": "body_size", "label": "Tamaño del texto (px)", "min": 13, "max": 24, "step": 1, "unit": "px", "default": 17 },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "PS – Hero" } ]
+}
+{% endschema %}

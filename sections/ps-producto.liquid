@@ -1,0 +1,167 @@
+{{ 'ps-styles.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ps-scripts.js' | asset_url }}" defer></script>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--ps-color-bg);
+  }
+{% endstyle %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign only_default_variant = product.has_only_default_variant
+-%}
+
+<section class="ps-section ps-producto" data-ps-product data-ps-gallery>
+  <div class="ps-container ps-producto__grid">
+
+    <div class="ps-producto__gallery">
+      {%- assign media = product.media | default: product.images -%}
+      <div class="ps-producto__main">
+        {%- if media.size > 0 -%}
+          <img data-ps-gallery-main src="{{ media.first | image_url: width: 900 }}" alt="{{ media.first.alt | escape }}" loading="eager" fetchpriority="high">
+        {%- else -%}
+          <div class="ps-producto__placeholder">{{ 'product-1' | placeholder_svg_tag: 'ps-placeholder-svg' }}</div>
+        {%- endif -%}
+      </div>
+      {%- if media.size > 1 -%}
+        <div class="ps-producto__thumbs">
+          {%- for m in media -%}
+            <button type="button" class="ps-producto__thumb{% if forloop.first %} is-active{% endif %}" data-ps-gallery-thumb data-full="{{ m | image_url: width: 900 }}">
+              <img src="{{ m | image_url: width: 160 }}" alt="{{ m.alt | escape }}" loading="lazy">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="ps-producto__buy">
+      {%- if product.vendor != blank and section.settings.show_vendor -%}
+        <p class="ps-eyebrow">{{ product.vendor }}</p>
+      {%- endif -%}
+      <h1 class="ps-h2">{{ product.title }}</h1>
+
+      <div class="ps-producto__price">
+        <span class="ps-producto__price-now" data-ps-price>{{ current_variant.price | money }}</span>
+        <span class="ps-producto__price-compare" data-ps-compare-price {% if current_variant.compare_at_price == blank or current_variant.compare_at_price <= current_variant.price %}hidden{% endif %}>{{ current_variant.compare_at_price | money }}</span>
+      </div>
+
+      {% form 'product', product %}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" data-ps-variant-id>
+
+        {%- unless only_default_variant -%}
+          <div class="ps-producto__options">
+            {%- for option in product.options_with_values -%}
+              <div class="ps-producto__option">
+                <label>{{ option.name }}</label>
+                <select data-ps-option-select>
+                  {%- for value in option.values -%}
+                    <option value="{{ value }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+
+        <script type="application/json" data-ps-variants>
+          {{ product.variants | json }}
+        </script>
+
+        <button type="submit" name="add" class="ps-btn ps-btn--gold ps-producto__submit" data-ps-submit {% if current_variant.available == false %}disabled{% endif %}>
+          <span data-ps-submit-text data-add-text="{{ section.settings.add_to_cart_text }}" data-unavailable-text="{{ section.settings.sold_out_text }}">
+            {%- if current_variant.available -%}{{ section.settings.add_to_cart_text }}{%- else -%}{{ section.settings.sold_out_text }}{%- endif -%}
+          </span>
+        </button>
+      {% endform %}
+
+      <div class="ps-producto__trust">
+        <div class="ps-producto__trust-item"><span>✓</span> {{ section.settings.trust_1 }}</div>
+        <div class="ps-producto__trust-item"><span>🚚</span> {{ section.settings.trust_2 }}</div>
+        <div class="ps-producto__trust-item"><span>🔒</span> {{ section.settings.trust_3 }}</div>
+      </div>
+
+      {%- if section.settings.intro != blank or product.description != blank -%}
+        <div class="ps-producto__description">
+          {%- if section.settings.intro != blank -%}
+            <p class="ps-body">{{ section.settings.intro | newline_to_br }}</p>
+          {%- endif -%}
+          {{ product.description }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="ps-producto__features">
+          {%- for block in section.blocks -%}
+            <div class="ps-producto__feature" {{ block.shopify_attributes }}>
+              <h3 class="ps-producto__feature-title">{{ block.settings.title }}</h3>
+              <p class="ps-producto__feature-text">{{ block.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .ps-producto__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+  #shopify-section-{{ section.id }} .ps-producto__main { background: var(--ps-color-paper); border-radius: var(--ps-radius-lg); overflow: clip; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; }
+  #shopify-section-{{ section.id }} .ps-producto__main img { width: 100%; height: 100%; object-fit: contain; padding: 24px; }
+  #shopify-section-{{ section.id }} .ps-producto__thumbs { display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+  #shopify-section-{{ section.id }} .ps-producto__thumb { width: 72px; height: 72px; padding: 0; border-radius: 8px; overflow: clip; border: 1px solid var(--ps-color-line); background: var(--ps-color-paper); cursor: pointer; }
+  #shopify-section-{{ section.id }} .ps-producto__thumb.is-active { border-color: var(--ps-color-gold); }
+  #shopify-section-{{ section.id }} .ps-producto__thumb img { width: 100%; height: 100%; object-fit: contain; }
+  #shopify-section-{{ section.id }} .ps-producto__price { display: flex; align-items: baseline; gap: 12px; margin: 8px 0 22px; }
+  #shopify-section-{{ section.id }} .ps-producto__price-now { font-family: var(--ps-font-head); font-size: 30px; color: var(--ps-color-ink); }
+  #shopify-section-{{ section.id }} .ps-producto__price-compare { font-size: 17px; color: var(--ps-color-ink-soft); text-decoration: line-through; }
+  #shopify-section-{{ section.id }} .ps-producto__options { margin-bottom: 20px; }
+  #shopify-section-{{ section.id }} .ps-producto__option label { display: block; font-size: 13px; margin-bottom: 6px; color: var(--ps-color-ink-soft); }
+  #shopify-section-{{ section.id }} .ps-producto__option select { width: 100%; padding: 12px 14px; border-radius: 4px; border: 1px solid var(--ps-color-line); background: var(--ps-color-paper); font-family: var(--ps-font-body); margin-bottom: 14px; }
+  #shopify-section-{{ section.id }} .ps-producto__submit { width: 100%; margin-top: 6px; }
+  #shopify-section-{{ section.id }} .ps-producto__trust { display: flex; flex-direction: column; gap: 10px; margin: 26px 0; padding: 18px 0; border-top: 1px solid var(--ps-color-line); border-bottom: 1px solid var(--ps-color-line); }
+  #shopify-section-{{ section.id }} .ps-producto__trust-item { font-size: 14px; color: var(--ps-color-ink-soft); display: flex; gap: 10px; }
+  #shopify-section-{{ section.id }} .ps-producto__trust-item span { color: var(--ps-color-gold); }
+  #shopify-section-{{ section.id }} .ps-producto__description { font-size: 15px; line-height: 1.75; color: var(--ps-color-ink-soft); }
+  #shopify-section-{{ section.id }} .ps-producto__features { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
+  #shopify-section-{{ section.id }} .ps-producto__feature-title { font-family: var(--ps-font-head); font-size: 17px; margin: 0 0 6px; }
+  #shopify-section-{{ section.id }} .ps-producto__feature-text { font-size: 14px; color: var(--ps-color-ink-soft); margin: 0; }
+  @media screen and (max-width: 990px) {
+    #shopify-section-{{ section.id }} .ps-producto__grid { grid-template-columns: 1fr; }
+    #shopify-section-{{ section.id }} .ps-producto__features { grid-template-columns: 1fr; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PS – Página de producto",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_vendor", "label": "Mostrar marca", "default": true },
+    { "type": "text", "id": "add_to_cart_text", "label": "Texto botón añadir al carrito", "default": "Añadir al carrito" },
+    { "type": "text", "id": "sold_out_text", "label": "Texto agotado", "default": "Agotado" },
+    { "type": "header", "content": "Confianza" },
+    { "type": "text", "id": "trust_1", "label": "Garantía 1", "default": "100% original, garantizado" },
+    { "type": "text", "id": "trust_2", "label": "Garantía 2", "default": "Envío rápido y discreto" },
+    { "type": "text", "id": "trust_3", "label": "Garantía 3", "default": "Pago 100% seguro" },
+    { "type": "header", "content": "Descripción" },
+    { "type": "textarea", "id": "intro", "label": "Texto introductorio (opcional)" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Característica",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Notas de salida" },
+        { "type": "text", "id": "text", "label": "Texto", "default": "Bergamota, pimienta rosa" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "PS – Página de producto" } ]
+}
+{% endschema %}
