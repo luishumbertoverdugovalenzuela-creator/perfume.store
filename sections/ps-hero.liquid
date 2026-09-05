@@ -83,12 +83,6 @@
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.7; transform: scale(1.12); }
   }
-  @media (prefers-reduced-motion: reduce) {
-    #shopify-section-{{ section.id }} .ps-hero__media img,
-    #shopify-section-{{ section.id }} .ps-hero__glow {
-      animation: none;
-    }
-  }
   @media screen and (max-width: 990px) {
     #shopify-section-{{ section.id }} .ps-hero__grid { grid-template-columns: 1fr; text-align: center; padding: 48px 0; min-height: auto; }
     #shopify-section-{{ section.id }} .ps-hero__ctas { justify-content: center; }
