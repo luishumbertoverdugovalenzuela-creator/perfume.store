@@ -69,12 +69,6 @@
     },
     "ps-pagos": {
       "type": "ps-pagos",
-      "blocks": {
-        "m1": { "type": "metodo", "settings": { "title": "Tarjeta de crédito o débito", "detail": "Visa, Mastercard y American Express, procesado de forma segura." } },
-        "m2": { "type": "metodo", "settings": { "title": "Transferencia bancaria", "detail": "Escribe aquí tu banco, titular y CLABE." } },
-        "m3": { "type": "metodo", "settings": { "title": "Depósito en efectivo", "detail": "Escribe aquí las instrucciones para depósito en tienda o cajero." } }
-      },
-      "block_order": ["m1", "m2", "m3"],
       "settings": {
         "eyebrow": "Compra con confianza",
         "title": "Métodos de pago aceptados",
