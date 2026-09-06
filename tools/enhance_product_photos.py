@@ -23,6 +23,20 @@ detección de "es este el recorte" debe usar el substring suelto
 "cutout", nunca "-cutout." (con el punto), que deja de coincidir en
 cuanto aparece el sufijo. El mismo detalle aplica al Liquid de
 sections/ps-producto.liquid.
+
+Nota sobre el recorte de fondo: NO uses un umbral global de "que tan
+blanco es este pixel" (distancia euclidiana a (255,255,255) sobre
+toda la imagen) — falla en dos casos reales que ya se dieron en esta
+tienda: (1) frascos plateados/con tapa espejada, donde los reflejos
+brillantes DEL PRODUCTO quedan tan cerca del blanco puro como el
+fondo y el algoritmo les hace agujeros; (2) fondos de estudio color
+crema/hueso (no blanco puro), donde el fondo casi no se distingue del
+producto y queda una neblina translúcida sin recortar bien ("se ve
+borroso"). La función `cutout()` de abajo usa en su lugar un
+flood-fill desde los bordes de la imagen (vía `scipy.ndimage.label`):
+solo se hace transparente lo que es del color del fondo real Y está
+conectado a un borde de la foto, así que un reflejo brillante rodeado
+por el propio frasco nunca se borra, sin importar qué tan claro sea.
 """
 import json
 import os
@@ -31,6 +45,7 @@ import urllib.request
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
+from scipy import ndimage
 
 STORE = "7eew11-ei.myshopify.com"
 API_VERSION = "2025-01"
@@ -149,6 +164,29 @@ def upload_file(target, file_path):
         resp.read()
 
 
+def cutout(im_rgb, tolerance=14, feather=1.3):
+    """Quita el fondo por flood-fill desde los bordes de la imagen, no por
+    un umbral global de blancura (ver nota al inicio del archivo)."""
+    arr = np.array(im_rgb).astype(np.float32)
+    border_px = np.concatenate([
+        arr[0:6, :].reshape(-1, 3), arr[-6:, :].reshape(-1, 3),
+        arr[:, 0:6].reshape(-1, 3), arr[:, -6:].reshape(-1, 3),
+    ])
+    bg_color = np.median(border_px, axis=0)
+    dist = np.sqrt(((arr - bg_color) ** 2).sum(axis=2))
+    candidate_bg = dist < tolerance
+    labeled, _ = ndimage.label(candidate_bg)
+    border_labels = set(labeled[0, :]) | set(labeled[-1, :]) | set(labeled[:, 0]) | set(labeled[:, -1])
+    border_labels.discard(0)
+    bg_mask = np.isin(labeled, list(border_labels)) if border_labels else np.zeros_like(candidate_bg)
+    alpha = np.where(bg_mask, 0, 255).astype(np.uint8)
+    rgba = np.dstack([arr.astype(np.uint8), alpha])
+    out = Image.fromarray(rgba, "RGBA")
+    a = out.split()[3].filter(ImageFilter.GaussianBlur(feather))
+    out.putalpha(a)
+    return out
+
+
 def enhance(url, out_path):
     src_path = out_path + ".src"
     urllib.request.urlretrieve(url, src_path)
@@ -161,20 +199,13 @@ def enhance(url, out_path):
     im = ImageEnhance.Color(im).enhance(1.05)
     im = ImageEnhance.Brightness(im).enhance(1.015)
 
-    arr = np.array(im).astype(np.float32)
-    dist = np.sqrt(((arr - 255.0) ** 2).sum(axis=2))
-    low, high = 8.0, 40.0
-    alpha = np.clip((dist - low) / (high - low), 0, 1) * 255.0
-    alpha = alpha.astype(np.uint8)
-    rgba = np.dstack([arr.astype(np.uint8), alpha])
-    cutout = Image.fromarray(rgba, "RGBA")
-    a = cutout.split()[3].filter(ImageFilter.GaussianBlur(1.3))
-    cutout.putalpha(a)
+    cutout_im = cutout(im)
+    a = cutout_im.split()[3]
 
     alpha_arr = np.array(a)
     ys, xs = np.where(alpha_arr > 20)
     if len(ys) == 0:
-        cutout.save(out_path)
+        cutout_im.save(out_path)
         os.remove(src_path)
         return
     x0, x1 = float(xs.min()), float(xs.max())
@@ -182,7 +213,7 @@ def enhance(url, out_path):
     bottle_w = x1 - x0
     cx = (x0 + x1) / 2
 
-    shadow_layer = Image.new("RGBA", cutout.size, (0, 0, 0, 0))
+    shadow_layer = Image.new("RGBA", cutout_im.size, (0, 0, 0, 0))
     sd = ImageDraw.Draw(shadow_layer)
     ell_w = bottle_w * 0.62
     ell_h = ell_w * 0.16
@@ -193,7 +224,7 @@ def enhance(url, out_path):
     )
     shadow_layer = shadow_layer.filter(ImageFilter.GaussianBlur(float(ell_h) * 0.55))
 
-    final = Image.alpha_composite(shadow_layer, cutout)
+    final = Image.alpha_composite(shadow_layer, cutout_im)
     final.save(out_path)
     os.remove(src_path)
 
