@@ -1,6 +1,7 @@
 {
   "current": {
-    "logo_width": 90,
+    "logo": "shopify://shop_images/ps-logo-parfumpremium.png",
+    "logo_width": 220,
     "customer_account_menu": "customer-account-main-menu",
     "color_schemes": {
       "scheme-1": {
