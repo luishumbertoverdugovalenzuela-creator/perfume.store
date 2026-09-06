@@ -56,6 +56,11 @@ https://7eew11-ei.myshopify.com/?preview_theme_id=159068913896
 - [ ] Nombre de la tienda en el panel sigue siendo "Mi tienda" — cambiar en Configuración → General si se quiere que diga "Perfume Store"
 - [ ] Publicar el tema como definitivo — SOLO con confirmación explícita del usuario (`shopify theme publish` o Admin API `themePublish`)
 
+## Segunda tanda + parche manual (38 productos, sept. 2026)
+- 2 productos nuevos más (Jean Paul Gaultier Scandal Le Parfum, Scandal Absolu) corregidos igual (vendor + template + foto).
+- **Detectado dos veces**: a los productos Valentino Born in Roma (9630176870632) y YSL Myslf L'absolu (9630174314728) se les ha borrado la foto recortada más de una vez sin que el usuario lo mencione explícitamente — revisar estos dos primero cuando se audite "productos nuevos" en el futuro, puede ser el usuario editándolos directo en Shopify admin.
+- **Parche manual permanente**: `9630818337000` (Armaf Aceite Club De Nuit Sillage) tiene un reflejo sobreexpuesto en la tapa que se funde con el fondo blanco sin ningún borde visible (ni al ojo humano) — ningún algoritmo de color/conectividad puede separarlo. Se protegió manualmente forzando opaco el rectángulo `y:55-275, x:195-505` de la imagen fuente en el script de esa corrida puntual (no está en `tools/enhance_product_photos.py`, que es de propósito general). Si el usuario vuelve a pedir arreglar esa foto, replicar el mismo parche puntual en vez de tocar el algoritmo general.
+
 ## Productos nuevos añadidos por el usuario (36 productos totales, sept. 2026)
 - El usuario agregó 14 productos nuevos directo en Shopify admin (Yves Saint Laurent, Armaf, Azzaro, Valentino, Giorgio Armani, Xerjoff, Carolina Herrera). Como siempre, llegaron con `vendor` = nombre de la tienda y sin `templateSuffix` — se corrigieron ambos (vendor real + `templateSuffix: "mt"`) y se les aplicó el mismo pipeline de recorte/realce de fotos (`tools/enhance_product_photos.py`, mismos parámetros calibrados). Total de productos activos: 36.
 - Recordatorio permanente: cuando el usuario diga algo como "agregué productos/artículos", repetir este proceso (buscar productos con `vendor` = nombre de tienda o `templateSuffix` en blanco vía Admin API, corregir vendor+template, correr el pipeline de fotos) para TODOS los que aparezcan, no solo el último.
