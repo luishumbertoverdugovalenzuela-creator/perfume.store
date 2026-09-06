@@ -56,6 +56,10 @@ https://7eew11-ei.myshopify.com/?preview_theme_id=159068913896
 - [ ] Nombre de la tienda en el panel sigue siendo "Mi tienda" — cambiar en Configuración → General si se quiere que diga "Perfume Store"
 - [ ] Publicar el tema como definitivo — SOLO con confirmación explícita del usuario (`shopify theme publish` o Admin API `themePublish`)
 
+## Productos nuevos añadidos por el usuario (36 productos totales, sept. 2026)
+- El usuario agregó 14 productos nuevos directo en Shopify admin (Yves Saint Laurent, Armaf, Azzaro, Valentino, Giorgio Armani, Xerjoff, Carolina Herrera). Como siempre, llegaron con `vendor` = nombre de la tienda y sin `templateSuffix` — se corrigieron ambos (vendor real + `templateSuffix: "mt"`) y se les aplicó el mismo pipeline de recorte/realce de fotos (`tools/enhance_product_photos.py`, mismos parámetros calibrados). Total de productos activos: 36.
+- Recordatorio permanente: cuando el usuario diga algo como "agregué productos/artículos", repetir este proceso (buscar productos con `vendor` = nombre de tienda o `templateSuffix` en blanco vía Admin API, corregir vendor+template, correr el pipeline de fotos) para TODOS los que aparezcan, no solo el último.
+
 ## Fotos de producto — mejora de calidad (22 productos, sept. 2026)
 - Se reprocesaron las fotos de los 22 productos activos con `tools/enhance_product_photos.py` (gratis, sin IA de pago): nitidez suave, contraste/color más ricos, recorte de fondo transparente y una sombra elíptica de apoyo bajo el frasco para look de foto de estudio.
 - **Cuidado**: valores de nitidez altos (`UnsharpMask` con `percent` alto o upscaling previo) generan halos/bandas blancas sobre los detalles facetados de los frascos — usar los valores conservadores ya calibrados en el script (`radius=1.4, percent=55, threshold=4`).
