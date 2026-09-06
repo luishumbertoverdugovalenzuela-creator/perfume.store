@@ -187,11 +187,27 @@ def cutout(im_rgb, tolerance=14, feather=1.3):
     return out
 
 
+def source_has_real_alpha(im):
+    """True si la foto de origen ya trae su propio canal de transparencia
+    (p. ej. el proveedor ya la recortó). En ese caso hay que RESPETARLO en
+    vez de recalcular el fondo desde cero: convertir a RGB primero descarta
+    ese canal bueno y dejaba colores "fantasma" bajo las zonas ya
+    transparentes, que nuestro propio recorte después reinterpretaba mal
+    y producía rayas/artefactos (visto repetidamente en el Valentino Born
+    in Roma, cuya foto de origen 481090.webp ya viene recortada)."""
+    if im.mode not in ("RGBA", "LA") and "transparency" not in im.info:
+        return False
+    alpha = np.array(im.convert("RGBA"))[:, :, 3]
+    return alpha.min() < 250 and alpha.max() > 5
+
+
 def enhance(url, out_path):
     src_path = out_path + ".src"
     urllib.request.urlretrieve(url, src_path)
-    im = Image.open(src_path).convert("RGB")
+    src_im = Image.open(src_path)
+    reuse_alpha = source_has_real_alpha(src_im)
 
+    im = src_im.convert("RGB")
     # Nitidez y color suaves: valores altos aqui producen halos/ruido
     # (bandas blancas) sobre los detalles facetados de los frascos.
     im = im.filter(ImageFilter.UnsharpMask(radius=1.4, percent=55, threshold=4))
@@ -199,7 +215,10 @@ def enhance(url, out_path):
     im = ImageEnhance.Color(im).enhance(1.05)
     im = ImageEnhance.Brightness(im).enhance(1.015)
 
-    cutout_im = cutout(im)
+    if reuse_alpha:
+        cutout_im = Image.merge("RGBA", (*im.split(), src_im.convert("RGBA").split()[3]))
+    else:
+        cutout_im = cutout(im)
     a = cutout_im.split()[3]
 
     alpha_arr = np.array(a)

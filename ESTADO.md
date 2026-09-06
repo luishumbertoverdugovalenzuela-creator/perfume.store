@@ -56,6 +56,11 @@ https://7eew11-ei.myshopify.com/?preview_theme_id=159068913896
 - [ ] Nombre de la tienda en el panel sigue siendo "Mi tienda" — cambiar en Configuración → General si se quiere que diga "Perfume Store"
 - [ ] Publicar el tema como definitivo — SOLO con confirmación explícita del usuario (`shopify theme publish` o Admin API `themePublish`)
 
+## Causa raíz real de las "rayas blancas" del Valentino Born in Roma (sept. 2026)
+- Tras 3 rondas de arreglos fallidos, se encontró la causa real: la foto de origen de ESE producto (`481090.webp`) ya venía con su propio canal alfa (RGBA) — el proveedor ya la había recortado. `tools/enhance_product_photos.py` siempre hacía `.convert('RGB')` sobre la foto de origen antes de procesarla, lo que descartaba ese canal alfa bueno y revelaba colores "fantasma" bajo las zonas ya transparentes (WebP con alfa no siempre limpia el RGB debajo de los píxeles transparentes). El recorte propio, reconstruido desde cero sobre esos datos contaminados, producía las rayas blancas horizontales.
+- **Corregido de raíz**: `enhance()` ahora detecta con `source_has_real_alpha()` si la foto de origen ya trae transparencia real y, si es así, la preserva tal cual (solo aplica nitidez/contraste sobre el RGB, conserva el alfa original) en vez de recalcular el recorte con flood-fill. Esto es un caso general del pipeline, no un parche puntual — si otro producto tiene una foto de origen ya recortada, se beneficia igual.
+- Lección para la sesión: cuando una misma foto falla repetidamente pese a arreglos que se ven bien en la inspección directa, revisar el modo/canal alfa de la imagen DE ORIGEN antes de seguir ajustando el algoritmo de recorte.
+
 ## Segunda tanda + parche manual (38 productos, sept. 2026)
 - 2 productos nuevos más (Jean Paul Gaultier Scandal Le Parfum, Scandal Absolu) corregidos igual (vendor + template + foto).
 - **Detectado dos veces**: a los productos Valentino Born in Roma (9630176870632) y YSL Myslf L'absolu (9630174314728) se les ha borrado la foto recortada más de una vez sin que el usuario lo mencione explícitamente — revisar estos dos primero cuando se audite "productos nuevos" en el futuro, puede ser el usuario editándolos directo en Shopify admin.
