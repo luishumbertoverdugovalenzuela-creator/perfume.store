@@ -36,17 +36,15 @@
         "button_text": "Ver colección"
       }
     },
-    "ps-catalogo": {
-      "type": "ps-catalogo",
+    "ps-motivacion": {
+      "type": "ps-motivacion",
       "settings": {
-        "eyebrow": "Nuestra colección",
-        "title": "Encuentra tu fragancia",
-        "body": "Marcas como Yves Saint Laurent, Versace, Jean Paul Gaultier, Giorgio Armani y más — todas 100% originales.",
-        "text_align": "center",
-        "product_count": 8,
-        "show_vendor": true,
-        "button_text": "Ver todo el catálogo",
-        "button_url": "/collections/all"
+        "eyebrow": "Encuentra el tuyo",
+        "title": "Un buen perfume no se usa, se recuerda",
+        "body": "Deja una impresión que dure. Explora nuestra selección de fragancias de diseñador, 100% originales.",
+        "fallback_image_url": "https://cdn.shopify.com/s/files/1/0809/4842/9032/files/9630176870632-cutout_b1577797-e8f5-454f-a2f5-1c934b8a840a.png?v=1788670027",
+        "button_text": "Ver perfumes de diseñador",
+        "button_url": "/collections/perfumes-de-disenador"
       }
     },
     "ps-historia": {
@@ -105,5 +103,5 @@
       }
     }
   },
-  "order": ["ps-hero", "ps-trust", "ps-categorias", "ps-catalogo", "ps-historia", "ps-resenas", "ps-pagos", "ps-faq"]
+  "order": ["ps-hero", "ps-trust", "ps-categorias", "ps-motivacion", "ps-historia", "ps-resenas", "ps-pagos", "ps-faq"]
 }

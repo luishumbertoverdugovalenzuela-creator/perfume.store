@@ -1,0 +1,85 @@
+{{ 'ps-styles.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--ps-color-bg-alt);
+  }
+{% endstyle %}
+
+<section class="ps-section ps-dark ps-motivacion">
+  <div class="ps-container ps-motivacion__grid">
+    <div class="ps-motivacion__media">
+      <div class="ps-motivacion__glow" aria-hidden="true"></div>
+      {%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 800 }}" alt="{{ section.settings.image.alt | escape }}" loading="lazy">
+      {%- else -%}
+        <img src="{{ section.settings.fallback_image_url }}" alt="" loading="lazy">
+      {%- endif -%}
+    </div>
+    <div class="ps-motivacion__copy ps-reveal">
+      <p class="ps-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="ps-h2">{{ section.settings.title }}</h2>
+      {%- if section.settings.body != blank -%}
+        <p class="ps-body">{{ section.settings.body }}</p>
+      {%- endif -%}
+      {%- if section.settings.button_text != blank -%}
+        <a href="{{ section.settings.button_url | default: '#' }}" class="ps-btn ps-btn--gold">{{ section.settings.button_text }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .ps-motivacion__grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: center; }
+  #shopify-section-{{ section.id }} .ps-motivacion__media { position: relative; display: flex; align-items: center; justify-content: center; min-height: 340px; }
+  #shopify-section-{{ section.id }} .ps-motivacion__media img {
+    position: relative;
+    z-index: 1;
+    max-width: 78%;
+    max-height: 420px;
+    object-fit: contain;
+    filter: drop-shadow(0 30px 36px rgba(0,0,0,0.55));
+    animation: ps-motiv-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) both,
+               ps-motiv-float 7s ease-in-out 1.6s infinite;
+  }
+  #shopify-section-{{ section.id }} .ps-motivacion__glow {
+    position: absolute; width: 62%; height: 62%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(178,138,77,0.32) 0%, rgba(178,138,77,0) 70%);
+    filter: blur(10px);
+    animation: ps-motiv-glow-in 1.6s ease both, ps-motiv-glow-pulse 7s ease-in-out 1.6s infinite;
+  }
+  @keyframes ps-motiv-in { 0% { opacity:0; transform: scale(.8) translateY(24px);} 70% { opacity:1; transform: scale(1.03) translateY(-4px);} 100% { opacity:1; transform: scale(1) translateY(0);} }
+  @keyframes ps-motiv-float { 0%,100% { transform: scale(1) translateY(0);} 50% { transform: scale(1) translateY(-14px);} }
+  @keyframes ps-motiv-glow-in { 0% { opacity:0; transform: scale(.4);} 100% { opacity:1; transform: scale(1);} }
+  @keyframes ps-motiv-glow-pulse { 0%,100% { opacity:1; transform: scale(1);} 50% { opacity:.65; transform: scale(1.14);} }
+  #shopify-section-{{ section.id }} .ps-motivacion__copy { text-align: left; }
+  #shopify-section-{{ section.id }} .ps-motivacion__copy .ps-h2 { font-style: italic; }
+  @media screen and (max-width: 900px) {
+    #shopify-section-{{ section.id }} .ps-motivacion__grid { grid-template-columns: 1fr; text-align: center; }
+    #shopify-section-{{ section.id }} .ps-motivacion__copy { text-align: center; }
+    #shopify-section-{{ section.id }} .ps-eyebrow { justify-content: center; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PS – Frase motivacional",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Encuentra el tuyo" },
+    { "type": "text", "id": "title", "label": "Frase", "default": "Un buen perfume no se usa, se recuerda" },
+    { "type": "textarea", "id": "body", "label": "Texto", "default": "Deja una impresión que dure. Explora nuestra selección de fragancias de diseñador, 100% originales." },
+    { "type": "image_picker", "id": "image", "label": "Imagen (opcional)" },
+    { "type": "text", "id": "fallback_image_url", "label": "URL de imagen de respaldo (si no se elige una arriba)" },
+    { "type": "header", "content": "Botón" },
+    { "type": "text", "id": "button_text", "label": "Texto del botón", "default": "Ver perfumes de diseñador" },
+    { "type": "url", "id": "button_url", "label": "Enlace del botón" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 80 }
+  ],
+  "presets": [ { "name": "PS – Frase motivacional" } ]
+}
+{% endschema %}
