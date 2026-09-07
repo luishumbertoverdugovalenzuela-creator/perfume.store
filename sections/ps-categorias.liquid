@@ -1,0 +1,139 @@
+{{ 'ps-styles.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--ps-color-surface);
+  }
+{% endstyle %}
+
+<section class="ps-section ps-dark ps-categorias">
+  <div class="ps-container">
+    <div class="ps-categorias__head ps-reveal" style="text-align:center;">
+      <p class="ps-eyebrow" style="justify-content:center;">{{ section.settings.eyebrow }}</p>
+      <h2 class="ps-h2">{{ section.settings.title }}</h2>
+      {%- if section.settings.body != blank -%}
+        <p class="ps-body" style="max-width:640px;margin-left:auto;margin-right:auto;">{{ section.settings.body }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="ps-categorias__grid">
+      {%- for block in section.blocks -%}
+        {%- assign coll = block.settings.collection -%}
+        {%- if coll == blank and block.settings.collection_handle != blank -%}
+          {%- assign coll = collections[block.settings.collection_handle] -%}
+        {%- endif -%}
+        <a href="{{ coll.url | default: '#' }}" class="ps-categorias__card ps-reveal" data-ps-delay="{{ forloop.index0 | times: 120 }}" {{ block.shopify_attributes }}>
+          <div class="ps-categorias__media">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 700 }}" alt="" loading="lazy">
+            {%- elsif coll.featured_image != blank -%}
+              <img src="{{ coll.featured_image | image_url: width: 700 }}" alt="" loading="lazy">
+            {%- elsif coll.products.first.featured_image != blank -%}
+              <img src="{{ coll.products.first.featured_image | image_url: width: 700 }}" alt="" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="ps-categorias__info">
+            <h3 class="ps-h3">{{ block.settings.title | default: coll.title }}</h3>
+            {%- if block.settings.description != blank -%}
+              <p class="ps-body">{{ block.settings.description }}</p>
+            {%- endif -%}
+            <span class="ps-categorias__cta">{{ section.settings.button_text }} <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .ps-categorias__head { margin-bottom: 44px; }
+  #shopify-section-{{ section.id }} .ps-categorias__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  #shopify-section-{{ section.id }} .ps-categorias__card {
+    display: block;
+    position: relative;
+    border-radius: var(--ps-radius-lg);
+    overflow: clip;
+    border: 1px solid var(--ps-color-line-dark);
+    background: var(--ps-color-surface-2);
+    text-decoration: none;
+    transition: transform 0.4s var(--ps-ease), border-color 0.4s var(--ps-ease);
+  }
+  #shopify-section-{{ section.id }} .ps-categorias__card:hover { transform: translateY(-6px); border-color: var(--ps-color-gold); }
+  #shopify-section-{{ section.id }} .ps-categorias__media {
+    position: relative;
+    aspect-ratio: 16/9;
+    background: radial-gradient(circle at 50% 40%, rgba(178,138,77,0.18) 0%, rgba(178,138,77,0) 70%), var(--ps-color-bg-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: clip;
+  }
+  #shopify-section-{{ section.id }} .ps-categorias__media img {
+    max-width: 55%;
+    max-height: 85%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 24px rgba(0,0,0,0.5));
+    transition: transform 0.5s var(--ps-ease);
+  }
+  #shopify-section-{{ section.id }} .ps-categorias__card:hover .ps-categorias__media img { transform: scale(1.06); }
+  #shopify-section-{{ section.id }} .ps-categorias__info { padding: 26px 28px 30px; }
+  #shopify-section-{{ section.id }} .ps-categorias__info .ps-h3 { margin-bottom: 8px; color: var(--ps-color-paper); }
+  #shopify-section-{{ section.id }} .ps-categorias__info .ps-body { color: rgba(255,253,248,0.65); margin-bottom: 16px; font-size: 14px; }
+  #shopify-section-{{ section.id }} .ps-categorias__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ps-color-gold-light);
+  }
+  @media screen and (max-width: 700px) {
+    #shopify-section-{{ section.id }} .ps-categorias__grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PS – Categorías",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Explora por estilo" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Encuentra tu categoría" },
+    { "type": "textarea", "id": "body", "label": "Texto (opcional)" },
+    { "type": "text", "id": "button_text", "label": "Texto del botón", "default": "Ver colección" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "categoria",
+      "name": "Categoría",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Colección" },
+        { "type": "text", "id": "collection_handle", "label": "Identificador de la colección (respaldo)" },
+        { "type": "text", "id": "title", "label": "Título (opcional, si no usa el de la colección)" },
+        { "type": "textarea", "id": "description", "label": "Descripción" },
+        { "type": "image_picker", "id": "image", "label": "Imagen (opcional, si no usa la de la colección)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PS – Categorías",
+      "blocks": [
+        { "type": "categoria", "settings": { "title": "Perfumes de Diseñador", "description": "Las grandes casas de moda: YSL, Dior, Valentino, Versace y más." } },
+        { "type": "categoria", "settings": { "title": "Perfumes Árabes", "description": "Alta fijación y proyección: Rasasi, Armaf, Bharara." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
