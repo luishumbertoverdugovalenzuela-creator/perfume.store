@@ -10,13 +10,17 @@
 
 <section class="ps-section ps-dark ps-motivacion">
   <div class="ps-container ps-motivacion__grid">
+    {%- if section.settings.image != blank -%}
+      {%- assign motiv_img_url = section.settings.image | image_url: width: 800 -%}
+    {%- else -%}
+      {%- assign motiv_img_url = section.settings.fallback_image_url -%}
+    {%- endif -%}
     <div class="ps-motivacion__media">
       <div class="ps-motivacion__glow" aria-hidden="true"></div>
-      {%- if section.settings.image != blank -%}
-        <img src="{{ section.settings.image | image_url: width: 800 }}" alt="{{ section.settings.image.alt | escape }}" loading="lazy">
-      {%- else -%}
-        <img src="{{ section.settings.fallback_image_url }}" alt="" loading="lazy">
-      {%- endif -%}
+      <div class="ps-motivacion__imgwrap">
+        <img src="{{ motiv_img_url }}" alt="{{ section.settings.image.alt | escape }}" loading="lazy">
+        <span class="ps-motivacion__shine" aria-hidden="true" style="-webkit-mask-image:url('{{ motiv_img_url }}');mask-image:url('{{ motiv_img_url }}');"></span>
+      </div>
     </div>
     <div class="ps-motivacion__copy ps-reveal">
       <p class="ps-eyebrow">{{ section.settings.eyebrow }}</p>
@@ -34,26 +38,53 @@
 <style>
   #shopify-section-{{ section.id }} .ps-motivacion__grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: center; }
   #shopify-section-{{ section.id }} .ps-motivacion__media { position: relative; display: flex; align-items: center; justify-content: center; min-height: 340px; }
-  #shopify-section-{{ section.id }} .ps-motivacion__media img {
+  #shopify-section-{{ section.id }} .ps-motivacion__imgwrap {
     position: relative;
     z-index: 1;
-    max-width: 78%;
+    display: inline-block;
+    animation: ps-motiv-in 1.5s cubic-bezier(0.22, 1, 0.36, 1) both,
+               ps-motiv-float 4.5s ease-in-out 1.5s infinite;
+  }
+  #shopify-section-{{ section.id }} .ps-motivacion__imgwrap img {
+    display: block;
+    max-width: 78vw;
+    width: 340px;
     max-height: 420px;
     object-fit: contain;
     filter: drop-shadow(0 30px 36px rgba(0,0,0,0.55));
-    animation: ps-motiv-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) both,
-               ps-motiv-float 7s ease-in-out 1.6s infinite;
+  }
+  #shopify-section-{{ section.id }} .ps-motivacion__shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 42%, rgba(255, 253, 248, 0.85) 50%, transparent 58%);
+    background-size: 300% 300%;
+    background-position: -120% 0;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    animation: ps-motiv-shine 3.4s ease-in-out 2s infinite;
   }
   #shopify-section-{{ section.id }} .ps-motivacion__glow {
     position: absolute; width: 62%; height: 62%; border-radius: 50%;
     background: radial-gradient(circle, rgba(178,138,77,0.32) 0%, rgba(178,138,77,0) 70%);
     filter: blur(10px);
-    animation: ps-motiv-glow-in 1.6s ease both, ps-motiv-glow-pulse 7s ease-in-out 1.6s infinite;
+    animation: ps-motiv-glow-in 1.6s ease both, ps-motiv-glow-pulse 4.5s ease-in-out 1.5s infinite;
   }
-  @keyframes ps-motiv-in { 0% { opacity:0; transform: scale(.8) translateY(24px);} 70% { opacity:1; transform: scale(1.03) translateY(-4px);} 100% { opacity:1; transform: scale(1) translateY(0);} }
-  @keyframes ps-motiv-float { 0%,100% { transform: scale(1) translateY(0);} 50% { transform: scale(1) translateY(-14px);} }
+  @keyframes ps-motiv-in { 0% { opacity:0; transform: scale(.7) rotate(-10deg) translateY(30px);} 70% { opacity:1; transform: scale(1.05) rotate(2deg) translateY(-6px);} 100% { opacity:1; transform: scale(1) rotate(0deg) translateY(0);} }
+  @keyframes ps-motiv-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(-2.5deg); }
+    50% { transform: translateY(-20px) rotate(0deg); }
+    75% { transform: translateY(-8px) rotate(2.5deg); }
+  }
+  @keyframes ps-motiv-shine { 0% { background-position: -120% 0; } 45% { background-position: 120% 0; } 100% { background-position: 120% 0; } }
   @keyframes ps-motiv-glow-in { 0% { opacity:0; transform: scale(.4);} 100% { opacity:1; transform: scale(1);} }
-  @keyframes ps-motiv-glow-pulse { 0%,100% { opacity:1; transform: scale(1);} 50% { opacity:.65; transform: scale(1.14);} }
+  @keyframes ps-motiv-glow-pulse { 0%,100% { opacity:1; transform: scale(1);} 50% { opacity:.65; transform: scale(1.18);} }
   #shopify-section-{{ section.id }} .ps-motivacion__copy { text-align: left; }
   #shopify-section-{{ section.id }} .ps-motivacion__copy .ps-h2 { font-style: italic; }
   @media screen and (max-width: 900px) {
