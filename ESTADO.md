@@ -1,5 +1,11 @@
 # Estado del proyecto — Perfume Store
 
+## Colecciones "Perfumes de Diseñador" / "Perfumes Árabes" (smart collections)
+- Creadas vía Admin API, ruleSet por VENDOR (OR). IDs: Diseñador `gid://shopify/Collection/450933129448` (handle `perfumes-de-disenador`), Árabes `gid://shopify/Collection/450933162216` (handle `perfumes-arabes`).
+- Vendors actuales en Árabes: Rasasi, Armaf, Bharara, Lattafa, Zimaya. En Diseñador: YSL, Jean Paul Gaultier, Giorgio Armani, Versace, Carolina Herrera, Dolce & Gabbana, Azzaro, Viktor&Rolf, Valentino, Dior, Creed, Xerjoff.
+- **Al detectar productos nuevos con marca no listada arriba**, decidir si es árabe/oriental (Ajmal, Swiss Arabian, Al Haramain, etc.) o de diseñador, y agregar el vendor al `ruleSet` de la colección correspondiente vía `collectionUpdate` (si no, el producto no aparecerá en ninguna categoría en la portada/catálogo aunque sí en "todos").
+- Ambas colecciones tuvieron que publicarse manualmente al canal "Tienda online" la primera vez (la app no tiene permiso para hacerlo por API) — ya están publicadas, no hace falta repetirlo.
+
 - Tienda: 7eew11-ei.myshopify.com (nombre visible actual en el panel: "Mi tienda")
 - Carpeta del proyecto: /home/user/perfume.store (repo git, rama claude/tienda-shopify-v2-5vnc08)
 - Tema base: Dawn (vía zip oficial de GitHub)
