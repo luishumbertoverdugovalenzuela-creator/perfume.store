@@ -8,6 +8,21 @@
         "color_scheme": "scheme-3"
       }
     },
+    "ps-categorias": {
+      "type": "ps-categorias",
+      "blocks": {
+        "c1": { "type": "categoria", "settings": { "collection": "perfumes-de-disenador", "collection_handle": "perfumes-de-disenador", "title": "Perfumes de Diseñador", "description": "Las grandes casas de moda: Yves Saint Laurent, Dior, Valentino, Versace, Giorgio Armani y más.", "image_url": "https://cdn.shopify.com/s/files/1/0809/4842/9032/files/9630807326952-cutout.png?v=1788668473" } },
+        "c2": { "type": "categoria", "settings": { "collection": "perfumes-arabes", "collection_handle": "perfumes-arabes", "title": "Perfumes Árabes", "description": "Alta fijación y proyección: Rasasi, Armaf, Bharara.", "image_url": "https://cdn.shopify.com/s/files/1/0809/4842/9032/files/9629413834984-cutout_2c024da8-baf5-447a-a445-4425c4b171f5.png?v=1788642270" } }
+      },
+      "block_order": ["c1", "c2"],
+      "settings": {
+        "eyebrow": "Explora por estilo",
+        "title": "Encuentra tu categoría",
+        "button_text": "Ver colección",
+        "padding_top": 56,
+        "padding_bottom": 8
+      }
+    },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
@@ -31,6 +46,7 @@
   },
   "order": [
     "banner",
+    "ps-categorias",
     "product-grid"
   ]
 }

@@ -8,6 +8,11 @@
   }
 {% endstyle %}
 
+{%- assign ps_hide_categorias = false -%}
+{%- if collection != blank and collection.handle != 'all' -%}
+  {%- assign ps_hide_categorias = true -%}
+{%- endif -%}
+{%- unless ps_hide_categorias -%}
 <section class="ps-section ps-dark ps-categorias">
   <div class="ps-container">
     <div class="ps-categorias__head ps-reveal" style="text-align:center;">
@@ -28,6 +33,8 @@
           <div class="ps-categorias__media">
             {%- if block.settings.image != blank -%}
               <img src="{{ block.settings.image | image_url: width: 700 }}" alt="" loading="lazy">
+            {%- elsif block.settings.image_url != blank -%}
+              <img src="{{ block.settings.image_url }}" alt="" loading="lazy">
             {%- elsif coll.featured_image != blank -%}
               <img src="{{ coll.featured_image | image_url: width: 700 }}" alt="" loading="lazy">
             {%- elsif coll.products.first.featured_image != blank -%}
@@ -46,6 +53,7 @@
     </div>
   </div>
 </section>
+{%- endunless -%}
 
 <style>
   #shopify-section-{{ section.id }} .ps-categorias__head { margin-bottom: 44px; }
@@ -122,7 +130,8 @@
         { "type": "text", "id": "collection_handle", "label": "Identificador de la colección (respaldo)" },
         { "type": "text", "id": "title", "label": "Título (opcional, si no usa el de la colección)" },
         { "type": "textarea", "id": "description", "label": "Descripción" },
-        { "type": "image_picker", "id": "image", "label": "Imagen (opcional, si no usa la de la colección)" }
+        { "type": "image_picker", "id": "image", "label": "Imagen (opcional, si no usa la de la colección)" },
+        { "type": "text", "id": "image_url", "label": "URL de imagen (respaldo)" }
       ]
     }
   ],
