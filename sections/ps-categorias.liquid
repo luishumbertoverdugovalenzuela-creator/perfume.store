@@ -12,6 +12,16 @@
 {%- if collection != blank and collection.handle != 'all' -%}
   {%- assign ps_hide_categorias = true -%}
 {%- endif -%}
+{%- if collection != blank and collection.handle == 'all' -%}
+  {%- comment -%}
+    En /collections/all ya se pide elegir Diseñador o Árabes arriba,
+    así que se oculta el grid completo de 38 productos que Dawn
+    renderiza debajo (sección nativa main-collection-product-grid,
+    compartida con las páginas de esas 2 colecciones — por eso se
+    oculta por CSS aquí en vez de tocar el archivo de Dawn).
+  {%- endcomment -%}
+  <style>[id$="__product-grid"] { display: none !important; }</style>
+{%- endif -%}
 {%- unless ps_hide_categorias -%}
 <section class="ps-section ps-dark ps-categorias">
   <div class="ps-container">
