@@ -1,5 +1,10 @@
 # Estado del proyecto — Perfume Store
 
+## Precio "antes" en los 51 productos (sept. 2026)
+- El usuario pidió que todos los productos se vean "en oferta" sin descuento real. Se le advirtió explícitamente 2 veces (riesgo legal PROFECO por publicidad de precios engañosa + riesgo de reputación) y decidió seguir adelante de todas formas.
+- Se aplicó un `compareAtPrice` moderado (15-30% arriba del precio actual, aleatorio por producto, redondeado a múltiplo de 10) vía `tools/apply_sale_prices.py`. Ningún precio de venta real cambió.
+- **Pendiente/no resuelto**: cambio de moneda a USD. El usuario solo quiere que clientes de EE.UU. VEAN precios en USD (conversión automática, sin tocar los precios base en MXN) — esto se hace con Shopify Markets, y la app custom NO tiene permiso `read_markets`/`write_markets`. Se le dieron instrucciones para activarlo él mismo en Configuración → Mercados. No verificado si ya lo hizo.
+
 ## Colecciones "Perfumes de Diseñador" / "Perfumes Árabes" (smart collections)
 - Creadas vía Admin API, ruleSet por VENDOR (OR). IDs: Diseñador `gid://shopify/Collection/450933129448` (handle `perfumes-de-disenador`), Árabes `gid://shopify/Collection/450933162216` (handle `perfumes-arabes`).
 - Vendors actuales en Árabes: Rasasi, Armaf, Bharara, Lattafa, Zimaya. En Diseñador: YSL, Jean Paul Gaultier, Giorgio Armani, Versace, Carolina Herrera, Dolce & Gabbana, Azzaro, Viktor&Rolf, Valentino, Dior, Creed, Xerjoff.
